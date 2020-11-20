@@ -423,6 +423,40 @@ public class FillInForm
 
             doc.save(new File(RESULT_FOLDER, "0-filledDropOldAppearanceNoCombNoMaxNoMultiLine.pdf"));
             doc.close();
-        }        
+        }
+    }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/64912688/insert-double-value-for-equotion-in-pdf-with-pdfbox-in-java">
+     * Insert double Value for equotion in PDF with pdfbox in Java
+     * </a>
+     * <br/>
+     * <a href="https://1drv.ms/b/s!Av6exjPNXlgOioouAuXL6QV4eUGkqg?e=ocfhvC">
+     * 2020-04_Beschaffungsantrag.pdf
+     * </a>
+     * <p>
+     * The field number 30 used by the OP is not the terminal field to
+     * fill-in but merely an intermediary one. The field to actually use
+     * is 'Einzelpreis in € exkl USt1.0.0.0.0'. Furthermore, as the field
+     * list used by the OP, it does not contain this field. Instead the
+     * field should be retrieved by name from the {@link PDAcroForm}
+     * object.
+     * </p>
+     */
+    @Test
+    public void testFill2020_04BeschaffungsantragEinzelpreis() throws IOException {
+        try (   InputStream resource = getClass().getResourceAsStream("2020-04_Beschaffungsantrag.pdf") ) {
+            PDDocument pdDocument = Loader.loadPDF(resource);
+
+            PDAcroForm acroForm = pdDocument.getDocumentCatalog().getAcroForm();
+            PDField field30 = acroForm.getFields().get(30);
+            System.out.printf("Field by index 30 is '%s'\n", field30.getFullyQualifiedName());
+            PDField fieldByName = acroForm.getField("Einzelpreis in € exkl USt1.0.0.0.0");
+            System.out.printf("Field by full name is '%s'\n", fieldByName.getFullyQualifiedName());
+            fieldByName.setValue("100");
+
+            pdDocument.save(new File(RESULT_FOLDER, "2020-04_Beschaffungsantrag-filledEinzelpreis in € exkl USt1.0.0.0.0.pdf"));
+            pdDocument.close();
+        }
     }
 }
