@@ -341,4 +341,43 @@ public class EditPageContent {
             document.save(new File(RESULT_FOLDER, "nuevo-noQrText.pdf"));
         }
     }
+
+    /**
+     * <a href="https://issues.apache.org/jira/browse/PDFBOX-2138">
+     * Corrupted words when using PDFTextStripper
+     * </a>
+     * <br/>
+     * <a href="https://issues.apache.org/jira/secure/attachment/12650037/PDFBOX-2138.pdf">
+     * PDFBOX-2138.pdf
+     * </a>
+     * <p>
+     * This test shows that there is no magic behind those marked content
+     * sequences, merely clip path definitions.
+     * </p>
+     */
+    @Test
+    public void testRemoveClipPdfbox2138() throws IOException {
+        try (   InputStream resource = getClass().getResourceAsStream("PDFBOX-2138.pdf");
+                PDDocument document = Loader.loadPDF(resource)) {
+            for (PDPage page : document.getDocumentCatalog().getPages()) {
+                PdfContentStreamEditor identity = new PdfContentStreamEditor(document, page) {
+                    @Override
+                    protected void write(ContentStreamWriter contentStreamWriter, Operator operator, List<COSBase> operands) throws IOException {
+                        String operatorString = operator.getName();
+
+                        if (CLIPPING_OPERATORS.contains(operatorString))
+                        {
+                            return;
+                        }
+
+                        super.write(contentStreamWriter, operator, operands);
+                    }
+
+                    final List<String> CLIPPING_OPERATORS = Arrays.asList("W", "W*");
+                };
+                identity.processPage(page);
+            }
+            document.save(new File(RESULT_FOLDER, "PDFBOX-2138-noClip.pdf"));
+        }
+    }
 }
