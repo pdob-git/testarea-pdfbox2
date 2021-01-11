@@ -11,9 +11,16 @@ import org.apache.pdfbox.cos.COSStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDResources;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.common.function.PDFunctionType4;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceStream;
+import org.apache.pdfbox.util.Matrix;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -49,34 +56,87 @@ public class ApplyTransferFunction {
                 pdImage = PDImageXObject.createFromByteArray(pdDocument, ByteStreams.toByteArray(imageResource), "Willi");
             }
 
+            PDAppearanceStream pdFormXObject = new PDAppearanceStream(pdDocument);
+            pdFormXObject.setResources(new PDResources());
+            pdFormXObject.setBBox(new PDRectangle(150, 100));
+            try (PDPageContentStream canvas = new PDPageContentStream(pdDocument, pdFormXObject)) {
+                PDFont font = PDType1Font.HELVETICA;
+                canvas.setFont(font, 10);
+                canvas.beginText();
+                canvas.newLineAtOffset(10, 85);
+                canvas.setNonStrokingColor(1, 0, 0);
+                canvas.showText("red");
+                canvas.newLineAtOffset(0, -10);
+                canvas.setNonStrokingColor(0, 1, 0);
+                canvas.showText("green");
+                canvas.newLineAtOffset(0, -10);
+                canvas.setNonStrokingColor(0, 0, 1);
+                canvas.showText("blue");
+                canvas.newLineAtOffset(0, -10);
+                canvas.setNonStrokingColor(0);
+                canvas.showText("gray");
+                canvas.newLineAtOffset(0, -10);
+                canvas.setNonStrokingColor(1, 0, 0, 0);
+                canvas.showText("yellow");
+                canvas.newLineAtOffset(0, -10);
+                canvas.setNonStrokingColor(0, 1, 0, 0);
+                canvas.showText("magenta");
+                canvas.newLineAtOffset(0, -10);
+                canvas.setNonStrokingColor(0, 0, 1, 0);
+                canvas.showText("cyan");
+                canvas.newLineAtOffset(0, -10);
+                canvas.setNonStrokingColor(0, 0, 0, 1);
+                canvas.showText("black");
+                canvas.endText();
+            }
+
             try (PDPageContentStream canvas = new PDPageContentStream(pdDocument, pdPage)) {
                 canvas.drawImage(pdImage, 0, 600, 150, 150);
+                drawForm(canvas, pdFormXObject, 0, 500);
                 canvas.setGraphicsStateParameters(createTransferedState("{ neg 1 add }"));
                 canvas.drawImage(pdImage, 150, 600, 150, 150);
+                drawForm(canvas, pdFormXObject, 150, 500);
                 canvas.setGraphicsStateParameters(createTransferedState("{ 90 mul cos }"));
                 canvas.drawImage(pdImage, 300, 600, 150, 150);
+                drawForm(canvas, pdFormXObject, 300, 500);
                 canvas.setGraphicsStateParameters(createTransferedState("{ 90 mul sin neg 1 add }"));
                 canvas.drawImage(pdImage, 450, 600, 150, 150);
+                drawForm(canvas, pdFormXObject, 450, 500);
                 canvas.setGraphicsStateParameters(createTransferedState("{ .5 mul }"));
-                canvas.drawImage(pdImage, 0, 450, 150, 150);
+                canvas.drawImage(pdImage, 0, 350, 150, 150);
+                drawForm(canvas, pdFormXObject, 0, 250);
                 canvas.setGraphicsStateParameters(createTransferedState("{ 90 mul cos neg 1 add }"));
-                canvas.drawImage(pdImage, 150, 450, 150, 150);
+                canvas.drawImage(pdImage, 150, 350, 150, 150);
+                drawForm(canvas, pdFormXObject, 150, 250);
                 canvas.setGraphicsStateParameters(createTransferedState("{ 90 mul sin }"));
-                canvas.drawImage(pdImage, 300, 450, 150, 150);
+                canvas.drawImage(pdImage, 300, 350, 150, 150);
+                drawForm(canvas, pdFormXObject, 300, 250);
                 canvas.setGraphicsStateParameters(createTransferedState("{ .5 mul .5 add }"));
-                canvas.drawImage(pdImage, 450, 450, 150, 150);
+                canvas.drawImage(pdImage, 450, 350, 150, 150);
+                drawForm(canvas, pdFormXObject, 450, 250);
                 canvas.setGraphicsStateParameters(createTransferedState("{ }", "{ pop 1 }", "{ pop 1 }", "{ pop 1 }"));
-                canvas.drawImage(pdImage, 0, 300, 150, 150);
+                canvas.drawImage(pdImage, 0, 100, 150, 150);
+                drawForm(canvas, pdFormXObject, 0, 0);
                 canvas.setGraphicsStateParameters(createTransferedState("{ pop 1 }", "{ }", "{ pop 1 }", "{ pop 1 }"));
-                canvas.drawImage(pdImage, 150, 300, 150, 150);
+                canvas.drawImage(pdImage, 150, 100, 150, 150);
+                drawForm(canvas, pdFormXObject, 150, 0);
                 canvas.setGraphicsStateParameters(createTransferedState("{ pop 1 }", "{ pop 1 }", "{ }", "{ pop 1 }"));
-                canvas.drawImage(pdImage, 300, 300, 150, 150);
+                canvas.drawImage(pdImage, 300, 100, 150, 150);
+                drawForm(canvas, pdFormXObject, 300, 0);
                 canvas.setGraphicsStateParameters(createTransferedState("{ pop 1 }", "{ pop 1 }", "{ pop 1 }", "{ }"));
-                canvas.drawImage(pdImage, 450, 300, 150, 150);
+                canvas.drawImage(pdImage, 450, 100, 150, 150);
+                drawForm(canvas, pdFormXObject, 450, 0);
             }
 
             pdDocument.save(new File(RESULT_FOLDER, "SimpleTransferExample.pdf"));
         }
+    }
+
+    void drawForm(PDPageContentStream canvas, PDFormXObject pdFormXObject, float x, float y) throws IOException {
+        canvas.saveGraphicsState();
+        canvas.transform(Matrix.getTranslateInstance(x, y));
+        canvas.drawForm(pdFormXObject);
+        canvas.restoreGraphicsState();
     }
 
     PDExtendedGraphicsState createTransferedState(String function) throws IOException {
