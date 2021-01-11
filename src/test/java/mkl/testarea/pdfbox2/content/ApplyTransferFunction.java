@@ -77,13 +77,13 @@ public class ApplyTransferFunction {
                 canvas.showText("gray");
                 canvas.newLineAtOffset(0, -10);
                 canvas.setNonStrokingColor(1, 0, 0, 0);
-                canvas.showText("yellow");
+                canvas.showText("cyan");
                 canvas.newLineAtOffset(0, -10);
                 canvas.setNonStrokingColor(0, 1, 0, 0);
                 canvas.showText("magenta");
                 canvas.newLineAtOffset(0, -10);
                 canvas.setNonStrokingColor(0, 0, 1, 0);
-                canvas.showText("cyan");
+                canvas.showText("yellow");
                 canvas.newLineAtOffset(0, -10);
                 canvas.setNonStrokingColor(0, 0, 0, 1);
                 canvas.showText("black");
