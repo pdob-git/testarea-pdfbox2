@@ -3,18 +3,18 @@ package mkl.testarea.pdfbox2.merge;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.multipdf.Overlay;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 import org.apache.pdfbox.pdmodel.graphics.blend.BlendMode;
 import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * @author mkl
@@ -66,4 +66,30 @@ public class OverlayDocuments {
         }
     }
 
+    /**
+     * <a href="https://stackoverflow.com/questions/66122899/is-it-possible-to-repair-a-pdf-using-pdfbox">
+     * Is it possible to “repair” a pdf using pdfbox?
+     * </a>
+     * <br/>
+     * <a href="https://drive.google.com/file/d/10lYNfkQlUvxeZ2rFps2ozBO-zgGrnVeU/view?usp=sharing">
+     * example_broken.pdf
+     * </a>
+     * <p>
+     * I cannot reproduce Overlay issues with the given file.
+     * </p>
+     */
+    @Test
+    public void testOverlayExampleBroken() throws IOException {
+        try (   InputStream exampleBrokenFile = getClass().getResourceAsStream("example_broken.pdf");
+                PDDocument empty = new PDDocument();
+                PDDocument exampleBroken = Loader.loadPDF(exampleBrokenFile);
+                Overlay overlayer = new Overlay()   ) {
+            empty.addPage(new PDPage());
+            overlayer.setInputPDF(empty);
+            overlayer.setAllPagesOverlayPDF(exampleBroken);
+            try (   PDDocument result = overlayer.overlay(Collections.emptyMap()) ) {
+                result.save(new File(RESULT_FOLDER, "example_broken-overlayed.pdf"));
+            }
+        }
+    }
 }
