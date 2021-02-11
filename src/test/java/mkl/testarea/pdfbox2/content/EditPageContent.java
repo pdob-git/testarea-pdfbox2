@@ -15,6 +15,7 @@ import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSFloat;
 import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.cos.COSNumber;
 import org.apache.pdfbox.pdfwriter.ContentStreamWriter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -378,6 +379,58 @@ public class EditPageContent {
                 identity.processPage(page);
             }
             document.save(new File(RESULT_FOLDER, "PDFBOX-2138-noClip.pdf"));
+        }
+    }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/66155088/pdfbox-replace-black-color-in-pdf-file">
+     * PDFBox: Replace black color in PDF file
+     * </a>
+     * <br/>
+     * <a href="https://gofile.io/d/AB1Bil">
+     * gridShapesModified.pdf
+     * </a>
+     * <p>
+     * This test replaces RGB black fill color in page content streams.
+     * </p>
+     */
+    @Test
+    public void testReplaceRGBBlackGridShapesModified() throws IOException {
+        float[] replacementColor = new float[] {.1f, .7f, .6f};
+
+        try (   InputStream resource = getClass().getResourceAsStream("gridShapesModified.pdf");
+                PDDocument document = Loader.loadPDF(resource)) {
+            for (PDPage page : document.getDocumentCatalog().getPages()) {
+                PdfContentStreamEditor identity = new PdfContentStreamEditor(document, page) {
+                    @Override
+                    protected void write(ContentStreamWriter contentStreamWriter, Operator operator, List<COSBase> operands) throws IOException {
+                        String operatorString = operator.getName();
+
+                        if (RGB_FILL_COLOR_OPERATORS.contains(operatorString))
+                        {
+                            if (operands.size() == 3) {
+                                if (isApproximately(operands.get(0), 0) &&
+                                        isApproximately(operands.get(1), 0) &&
+                                        isApproximately(operands.get(2), 0)) {
+                                    for (int i = 0; i < replacementColor.length; i++) {
+                                        operands.set(i, new COSFloat(replacementColor[i]));
+                                    }
+                                }
+                            }
+                        }
+
+                        super.write(contentStreamWriter, operator, operands);
+                    }
+
+                    boolean isApproximately(COSBase number, float compare) {
+                        return (number instanceof COSNumber) && Math.abs(((COSNumber)number).floatValue() - compare) < 1e-4;
+                    }
+
+                    final List<String> RGB_FILL_COLOR_OPERATORS = Arrays.asList("rg", "sc");
+                };
+                identity.processPage(page);
+            }
+            document.save(new File(RESULT_FOLDER, "gridShapesModified-RGBBlackReplaced.pdf"));
         }
     }
 }
