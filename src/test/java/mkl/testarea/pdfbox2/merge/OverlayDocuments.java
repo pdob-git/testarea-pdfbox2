@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.Iterator;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.multipdf.Overlay;
@@ -76,6 +77,7 @@ public class OverlayDocuments {
      * </a>
      * <p>
      * I cannot reproduce Overlay issues with the given file.
+     * But see {@link #testOverlayPreparationExampleBroken()}.
      * </p>
      */
     @Test
@@ -90,6 +92,71 @@ public class OverlayDocuments {
             try (   PDDocument result = overlayer.overlay(Collections.emptyMap()) ) {
                 result.save(new File(RESULT_FOLDER, "example_broken-overlayed.pdf"));
             }
+        }
+    }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/66122899/is-it-possible-to-repair-a-pdf-using-pdfbox">
+     * Is it possible to “repair” a pdf using pdfbox?
+     * </a>
+     * <br/>
+     * <a href="https://drive.google.com/file/d/10lYNfkQlUvxeZ2rFps2ozBO-zgGrnVeU/view?usp=sharing">
+     * example_broken.pdf
+     * </a>
+     * <p>
+     * After the OP shared his code, it turns out that not the
+     * overlaying (tested in {@link #testOverlayExampleBroken()})
+     * but instead a preparation step is the problem: the page
+     * resources in the document are inherited but the preparation
+     * step loses everything inherited.
+     * But see {@link #testOverlayPreparationFixedExampleBroken()}.
+     * </p>
+     */
+    @Test
+    public void testOverlayPreparationExampleBroken() throws IOException {
+        try (   InputStream exampleBrokenFile = getClass().getResourceAsStream("example_broken.pdf");
+                PDDocument finalOverlayDoc = new PDDocument();
+                PDDocument overlayDocument = Loader.loadPDF(exampleBrokenFile) ) {
+            Iterator<PDPage> overlayIterator = overlayDocument.getPages().iterator();
+            while(overlayIterator.hasNext()) {
+                PDPage pg = overlayIterator.next();
+                finalOverlayDoc.addPage(pg);
+            }
+            finalOverlayDoc.save(new File(RESULT_FOLDER, "example_broken-preparedForOverlay.pdf"));
+        }
+        
+    }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/66122899/is-it-possible-to-repair-a-pdf-using-pdfbox">
+     * Is it possible to “repair” a pdf using pdfbox?
+     * </a>
+     * <br/>
+     * <a href="https://drive.google.com/file/d/10lYNfkQlUvxeZ2rFps2ozBO-zgGrnVeU/view?usp=sharing">
+     * example_broken.pdf
+     * </a>
+     * <p>
+     * After the OP shared his code, it turns out that not the
+     * overlaying (tested in {@link #testOverlayExampleBroken()})
+     * but instead a preparation step is the problem (tested in
+     * {@link #testOverlayPreparationExampleBroken()}): the page
+     * resources in the document are inherited but the preparation
+     * step loses everything inherited. This can be fixed by
+     * explicitly setting the page resources as shown here.
+     * </p>
+     */
+    @Test
+    public void testOverlayPreparationFixedExampleBroken() throws IOException {
+        try (   InputStream exampleBrokenFile = getClass().getResourceAsStream("example_broken.pdf");
+                PDDocument finalOverlayDoc = new PDDocument();
+                PDDocument overlayDocument = Loader.loadPDF(exampleBrokenFile) ) {
+            Iterator<PDPage> overlayIterator = overlayDocument.getPages().iterator();
+            while(overlayIterator.hasNext()) {
+                PDPage pg = overlayIterator.next();
+                pg.setResources(pg.getResources());
+                finalOverlayDoc.addPage(pg);
+            }
+            finalOverlayDoc.save(new File(RESULT_FOLDER, "example_broken-preparedForOverlay-Fixed.pdf"));
         }
     }
 }
