@@ -1,6 +1,3 @@
-/**
- * 
- */
 package mkl.testarea.pdfbox2.content;
 
 import java.io.File;
@@ -27,8 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * @author mklink
- *
+ * @author mkl
  */
 public class ChangeTextColor {
     final static File RESULT_FOLDER = new File("target/test-outputs", "content");
@@ -56,7 +52,7 @@ public class ChangeTextColor {
         try (   InputStream resource = getClass().getResourceAsStream("test-after-removing-annotation.pdf");
                 PDDocument document = Loader.loadPDF(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
-                PdfContentStreamEditor identity = new PdfContentStreamEditor(document, page) {
+                PdfContentStreamEditor editor = new PdfContentStreamEditor(document, page) {
                     @Override
                     protected void write(ContentStreamWriter contentStreamWriter, Operator operator, List<COSBase> operands) throws IOException {
                         String operatorString = operator.getName();
@@ -99,7 +95,7 @@ public class ChangeTextColor {
                     final Operator SET_NON_STROKING_GRAY = Operator.getOperator("g");
                     final List<COSBase> GRAY_BLACK_VALUES = Arrays.asList(COSInteger.ZERO);
                 };
-                identity.processPage(page);
+                editor.processPage(page);
             }
             document.save(new File(RESULT_FOLDER, "test-after-removing-annotation-withBlackText.pdf"));
         }
