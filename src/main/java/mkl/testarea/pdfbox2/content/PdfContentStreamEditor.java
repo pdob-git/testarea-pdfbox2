@@ -89,7 +89,7 @@ public class PdfContentStreamEditor extends PDFGraphicsStreamEngine {
     public void curveTo(float x1, float y1, float x2, float y2, float x3, float y3) throws IOException { }
 
     @Override
-    public Point2D getCurrentPoint() throws IOException { return null; }
+    public Point2D getCurrentPoint() throws IOException { return new Point2D.Float(); }
 
     @Override
     public void closePath() throws IOException { }
