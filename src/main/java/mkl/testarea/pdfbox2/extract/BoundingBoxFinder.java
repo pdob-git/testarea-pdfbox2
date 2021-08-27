@@ -179,7 +179,7 @@ public class BoundingBoxFinder extends PDFGraphicsStreamEngine {
 
     @Override
     public Point2D getCurrentPoint() throws IOException {
-        return null;
+        return new Point2D.Float();
     }
 
     @Override

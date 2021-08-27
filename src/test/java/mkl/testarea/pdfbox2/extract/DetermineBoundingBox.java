@@ -14,6 +14,8 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import mkl.testarea.pdfbox2.extract.MarkedContentBoundingBoxFinder.MarkedContent;
+
 /**
  * <a href="https://stackoverflow.com/questions/52821421/how-do-determine-location-of-actual-pdf-content-with-pdfbox">
  * How do determine location of actual PDF content with PDFBox?
@@ -113,5 +115,92 @@ public class DetermineBoundingBox {
                 canvas.stroke();
             }
         }
+    }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/68565744/pdfbox-how-to-determine-bounding-box-of-vector-figure-path-shape">
+     * PDFBox: how to determine bounding box of vector figure (path shape)
+     * </a>
+     * <br/>
+     * <a href="https://drive.google.com/file/d/1Z1R-SIalxPzAHH57_Qs0zGPDV3rjoqtN/view">
+     * Trade_Simple1.pdf
+     * </a> as "testAlexanderDyuzhev.pdf"
+     * <p>
+     * This test applies the {@link MarkedContentBoundingBoxFinder} to
+     * a test document of some other question and frames the bounding
+     * boxes accordingly.
+     * </p>
+     */
+    @Test
+    public void testMarkedContentTrade_Simple1() throws IOException {
+        try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/content/Trade_Simple1.pdf");
+                PDDocument pdDocument = Loader.loadPDF(resource)   ) {
+            drawMarkedContentBoundingBoxes(pdDocument);
+            pdDocument.save(new File(RESULT_FOLDER, "Trade_Simple1-boundingBoxes.pdf"));
+        }
+    }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/68565744/pdfbox-how-to-determine-bounding-box-of-vector-figure-path-shape">
+     * PDFBox: how to determine bounding box of vector figure (path shape)
+     * </a>
+     * <br/>
+     * <a href="https://www.dropbox.com/s/w4ksnud78bu9oz5/test.pdf?dl=0">
+     * test.pdf
+     * </a> as "testAlexanderDyuzhev.pdf"
+     * <p>
+     * This test applies the {@link MarkedContentBoundingBoxFinder} to
+     * the test document provided by the OP and frames the bounding boxes
+     * accordingly.
+     * </p>
+     */
+    @Test
+    public void testMarkedContentTestAlexanderDyuzhev() throws IOException {
+        try (   InputStream resource = getClass().getResourceAsStream("testAlexanderDyuzhev.pdf");
+                PDDocument pdDocument = Loader.loadPDF(resource)   ) {
+            drawMarkedContentBoundingBoxes(pdDocument);
+            pdDocument.save(new File(RESULT_FOLDER, "testAlexanderDyuzhev-boundingBoxes.pdf"));
+        }
+    }
+
+    void drawMarkedContentBoundingBoxes(PDDocument pdDocument) throws IOException {
+        for (PDPage pdPage : pdDocument.getPages()) {
+            MarkedContent markedContent = drawMarkedContentBoundingBoxes(pdDocument, pdPage);
+            printMarkedContentBoundingBoxes(markedContent, "");
+        }
+    }
+
+    MarkedContent drawMarkedContentBoundingBoxes(PDDocument pdDocument, PDPage pdPage) throws IOException {
+        MarkedContentBoundingBoxFinder boxFinder = new MarkedContentBoundingBoxFinder(pdPage);
+        boxFinder.processPage(pdPage);
+        MarkedContent markedContent = boxFinder.content;
+        if (markedContent.boundingBox != null) {
+            try (   PDPageContentStream canvas = new PDPageContentStream(pdDocument, pdPage, AppendMode.APPEND, true, true)) {
+                canvas.setStrokingColor(Color.magenta);
+                drawMarkedContentBoundingBoxes(markedContent, canvas);
+                canvas.stroke();
+            }
+        }
+        return markedContent;
+    }
+
+    void drawMarkedContentBoundingBoxes(MarkedContent markedContent, PDPageContentStream canvas) throws IOException {
+        Rectangle2D box = markedContent.boundingBox;
+        if (box != null) {
+            canvas.addRect((float)box.getMinX(), (float)box.getMinY(), (float)box.getWidth(), (float)box.getHeight());
+        }
+
+        for (MarkedContent childContent : markedContent.children) {
+            drawMarkedContentBoundingBoxes(childContent, canvas);
+        }
+    }
+
+    void printMarkedContentBoundingBoxes(MarkedContent markedContent, String prefix) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(prefix).append(markedContent.tag.getName());
+        builder.append(' ').append(markedContent.boundingBox);
+        System.out.println(builder.toString());
+        for (MarkedContent child : markedContent.children)
+            printMarkedContentBoundingBoxes(child, prefix + "  ");
     }
 }
