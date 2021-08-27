@@ -75,14 +75,14 @@ public class EditMarkedContent {
                         boolean inArtifactBefore = inArtifact;
 
                         if (unmarked && (!inArtifactBefore) && PATH_CONSTRUCTION.contains(operatorString)) {
-                            super.write(contentStreamWriter, Operator.getOperator("BMC"), Collections.singletonList(COSName.ARTIFACT));
+                            super.write(contentStreamWriter, Operator.getOperator("BMC"), Collections.<COSBase>singletonList(COSName.ARTIFACT));
                             inArtifact = true;
                         }
 
                         super.write(contentStreamWriter, operator, operands);
 
                         if (unmarked && inArtifactBefore && PATH_PAINTING.contains(operatorString)) {
-                            super.write(contentStreamWriter, Operator.getOperator("EMC"), Collections.emptyList());
+                            super.write(contentStreamWriter, Operator.getOperator("EMC"), Collections.<COSBase>emptyList());
                             inArtifact = false;
                         }
                     }
