@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -18,6 +20,10 @@ import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.graphics.PDXObject;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImage;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceDictionary;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceEntry;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceStream;
 import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 import org.apache.pdfbox.util.Matrix;
 import org.junit.BeforeClass;
@@ -359,4 +365,131 @@ public class ExtractImages
             }
         }
     }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/69038778/use-pdfbox-to-get-a-digital-signature-image-from-a-pdf">
+     * Use PDFBox to get a digital signature image from a PDF?
+     * </a>
+     * <p>
+     * Here we adopt the technique from the PDFBox tool {@link org.apache.pdfbox.tools.ExtractImages}
+     * and name the exported images properly.
+     * </p>
+     */
+    void extractPageAnnotationImages(PDDocument document, String fileNameFormat) throws IOException
+    {
+        int page = 1;
+        for (final PDPage pdPage : document.getPages())
+        {
+            final int currentPage = page;
+            Map<String, PDAppearanceStream> allStreams = new HashMap<>();
+            int annot = 1;
+            for (PDAnnotation pdAnnotation  : pdPage.getAnnotations()) {
+                PDAppearanceDictionary appearancesDictionary = pdAnnotation.getAppearance();
+                Map<String, PDAppearanceEntry> dictsOrStreams = Map.of("Down", appearancesDictionary.getDownAppearance(), "Normal", appearancesDictionary.getNormalAppearance(), "Rollover", appearancesDictionary.getRolloverAppearance());
+                for (Map.Entry<String, PDAppearanceEntry> entry : dictsOrStreams.entrySet()) {
+                    if (entry.getValue().isStream()) {
+                        allStreams.put(String.format("%d-%s", annot, entry.getKey()), entry.getValue().getAppearanceStream());
+                    } else {
+                        for (Map.Entry<COSName, PDAppearanceStream> subEntry : entry.getValue().getSubDictionary().entrySet()) {
+                            allStreams.put(String.format("%d-%s.%s", annot, entry.getKey(), subEntry.getKey().getName()), subEntry.getValue());
+                        }
+                    }
+                }
+                annot++;
+            }
+
+            PDFGraphicsStreamEngine pdfGraphicsStreamEngine = new PDFGraphicsStreamEngine(pdPage)
+            {
+                String current = null;
+                
+                @Override
+                public void processPage(PDPage page) throws IOException {
+                    for (Map.Entry<String,PDAppearanceStream> entry : allStreams.entrySet()) {
+                        current = entry.getKey();
+                        processChildStream(entry.getValue(), pdPage);
+                    }
+                }
+
+                @Override
+                public void drawImage(PDImage pdImage) throws IOException
+                {
+                    if (pdImage instanceof PDImageXObject)
+                    {
+                        Matrix ctm = getGraphicsState().getCurrentTransformationMatrix();
+                        String flips = "";
+                        if (ctm.getScaleX() < 0)
+                            flips += "h";
+                        if (ctm.getScaleY() < 0)
+                            flips += "v";
+                        if (flips.length() > 0)
+                            flips = "-" + flips;
+                        PDImageXObject image = (PDImageXObject)pdImage;
+                        File file = new File(RESULT_FOLDER, String.format(fileNameFormat, currentPage, current, flips, image.getSuffix()));
+                        ImageIOUtil.writeImage(image.getImage(), image.getSuffix(), new FileOutputStream(file));
+                    }
+                }
+
+                @Override
+                public void appendRectangle(Point2D p0, Point2D p1, Point2D p2, Point2D p3) throws IOException { }
+
+                @Override
+                public void clip(int windingRule) throws IOException { }
+
+                @Override
+                public void moveTo(float x, float y) throws IOException {  }
+
+                @Override
+                public void lineTo(float x, float y) throws IOException { }
+
+                @Override
+                public void curveTo(float x1, float y1, float x2, float y2, float x3, float y3) throws IOException {  }
+
+                @Override
+                public Point2D getCurrentPoint() throws IOException { return new Point2D.Float(); }
+
+                @Override
+                public void closePath() throws IOException { }
+
+                @Override
+                public void endPath() throws IOException { }
+
+                @Override
+                public void strokePath() throws IOException { }
+
+                @Override
+                public void fillPath(int windingRule) throws IOException { }
+
+                @Override
+                public void fillAndStrokePath(int windingRule) throws IOException { }
+
+                @Override
+                public void shadingFill(COSName shadingName) throws IOException { }
+            };
+            pdfGraphicsStreamEngine.processPage(pdPage);
+            page++;
+        }
+    }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/69038778/use-pdfbox-to-get-a-digital-signature-image-from-a-pdf">
+     * Use PDFBox to get a digital signature image from a PDF?
+     * </a>
+     * <br/>
+     * <a href="https://1drv.ms/u/s!AkDpL-6DTpJjjwv9i4O5ctKjo0Sz">
+     * stampForDebug.pdf
+     * </a>
+     * <p>
+     * This test shows how to extract signature appearance bitmaps.
+     * </p>
+     */
+    @Test
+    public void testExtractAnnotationImagesStampForDebug() throws IOException
+    {
+        try (   InputStream resource = getClass().getResourceAsStream("stampForDebug.pdf"))
+        {
+            PDDocument document = Loader.loadPDF(resource);
+            extractPageAnnotationImages(document, "stampForDebug-%s-%s%s.%s");
+        }
+    }
+
 }
