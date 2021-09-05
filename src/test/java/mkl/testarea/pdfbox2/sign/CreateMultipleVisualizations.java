@@ -29,6 +29,7 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceDictionary;
@@ -197,7 +198,7 @@ public class CreateMultipleVisualizations implements SignatureInterface {
         float height = bbox.getHeight();
 
         form.setBBox(bbox);
-        PDFont font = PDType1Font.HELVETICA_BOLD;
+        PDFont font = new PDType1Font(FontName.HELVETICA_BOLD);
 
         // from PDVisualSigBuilder.createAppearanceDictionary()
         PDAppearanceDictionary appearance = new PDAppearanceDictionary();

@@ -36,6 +36,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.PDType3CharProc;
 import org.apache.pdfbox.pdmodel.font.PDType3Font;
 import org.apache.pdfbox.pdmodel.font.PDVectorFont;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.text.PDFMarkedContentExtractor;
 import org.apache.pdfbox.text.TextPosition;
 import org.apache.pdfbox.util.Matrix;
@@ -186,7 +187,7 @@ public class VisualizeMarkedContent {
                 if (canvas == null) {
                     canvas = new PDPageContentStream(document, page, AppendMode.APPEND, false, true);
                     visualizations.put(page, canvas);
-                    canvas.setFont(PDType1Font.HELVETICA, 11);
+                    canvas.setFont(new PDType1Font(FontName.HELVETICA), 11);
                 }
                 canvas.saveGraphicsState();
                 canvas.setStrokingColor(color);

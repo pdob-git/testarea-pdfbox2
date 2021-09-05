@@ -10,6 +10,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -37,7 +38,7 @@ public class TextAndGraphics
     @Test
     public void testDrawTextLineText() throws IOException
     {
-        PDFont font = PDType1Font.HELVETICA;
+        PDFont font = new PDType1Font(FontName.HELVETICA);
         float fontSize = 14;
         float fontHeight = fontSize;
         float leading = 20;
@@ -57,7 +58,7 @@ public class TextAndGraphics
 
         contentStream.beginText();
         contentStream.newLineAtOffset(startX, yCordinate);
-        contentStream.showText("Entry Form – Header");
+        contentStream.showText("Entry Form ï¿½ Header");
         yCordinate -= fontHeight;  //This line is to track the yCordinate
         contentStream.newLineAtOffset(0, -leading);
         yCordinate -= leading;

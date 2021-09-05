@@ -16,6 +16,7 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.common.function.PDFunctionType4;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
@@ -60,7 +61,7 @@ public class ApplyTransferFunction {
             pdFormXObject.setResources(new PDResources());
             pdFormXObject.setBBox(new PDRectangle(150, 100));
             try (PDPageContentStream canvas = new PDPageContentStream(pdDocument, pdFormXObject)) {
-                PDFont font = PDType1Font.HELVETICA;
+                PDFont font = new PDType1Font(FontName.HELVETICA);
                 canvas.setFont(font, 10);
                 canvas.beginText();
                 canvas.newLineAtOffset(10, 85);

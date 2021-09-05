@@ -17,6 +17,7 @@ import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceDictionary;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceStream;
@@ -54,7 +55,7 @@ public class TestEmptySignatureField
         try (   InputStream sourceStream = getClass().getResourceAsStream("test.pdf");
                 OutputStream output = new FileOutputStream(new File(RESULT_FOLDER, "test-with-empty-sig-field.pdf")))
         {
-            PDFont font = PDType1Font.HELVETICA;
+            PDFont font = new PDType1Font(FontName.HELVETICA);
             PDResources resources = new PDResources();
             resources.put(COSName.getPDFName("Helv"), font);
 

@@ -11,6 +11,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceDictionary;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceEntry;
@@ -62,7 +63,7 @@ public class CreateCheckBox
         pdAppearanceStream.setResources(new PDResources());
         try (PDPageContentStream pdPageContentStream = new PDPageContentStream(document, pdAppearanceStream))
         {
-            pdPageContentStream.setFont(PDType1Font.ZAPF_DINGBATS, 14.5f);
+            pdPageContentStream.setFont(new PDType1Font(FontName.ZAPF_DINGBATS), 14.5f);
             pdPageContentStream.beginText();
             pdPageContentStream.newLineAtOffset(3, 4);
             pdPageContentStream.showText("\u2714");
@@ -75,7 +76,7 @@ public class CreateCheckBox
         pdAppearanceStream.setResources(new PDResources());
         try (PDPageContentStream pdPageContentStream = new PDPageContentStream(document, pdAppearanceStream))
         {
-            pdPageContentStream.setFont(PDType1Font.ZAPF_DINGBATS, 14.5f);
+            pdPageContentStream.setFont(new PDType1Font(FontName.ZAPF_DINGBATS), 14.5f);
             pdPageContentStream.beginText();
             pdPageContentStream.newLineAtOffset(3, 4);
             pdPageContentStream.showText("\u2718");

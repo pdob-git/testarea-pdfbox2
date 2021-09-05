@@ -12,6 +12,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.graphics.optionalcontent.PDOptionalContentGroup;
 import org.apache.pdfbox.pdmodel.graphics.optionalcontent.PDOptionalContentProperties;
 import org.junit.BeforeClass;
@@ -95,7 +96,7 @@ public class AddContentToOCG
             page.setResources(resources);
         }
 
-        PDFont font = PDType1Font.HELVETICA;
+        PDFont font = new PDType1Font(FontName.HELVETICA);
 
         PDPageContentStream contentStream = new PDPageContentStream(document, page, AppendMode.APPEND, true, true);
         contentStream.beginMarkedContent(COSName.OC, layer);

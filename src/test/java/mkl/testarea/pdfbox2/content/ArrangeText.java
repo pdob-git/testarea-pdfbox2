@@ -8,6 +8,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -38,7 +39,7 @@ public class ArrangeText {
             PDPage page = new PDPage();
             document.addPage(page);
 
-            PDFont font = PDType1Font.HELVETICA;
+            PDFont font = new PDType1Font(FontName.HELVETICA);
 
             String text = "Text 1";
             String text1 = "Text 2";
@@ -95,8 +96,8 @@ public class ArrangeText {
         PDDocument document = new PDDocument();
         PDPage page = new PDPage();
         document.addPage(page);
-        PDFont fontNormal = PDType1Font.HELVETICA;
-        PDFont fontBold = PDType1Font.HELVETICA_BOLD;
+        PDFont fontNormal = new PDType1Font(FontName.HELVETICA);
+        PDFont fontBold = new PDType1Font(FontName.HELVETICA_BOLD);
         PDPageContentStream contentStream =new PDPageContentStream(document, page);
         contentStream.beginText();
         contentStream.newLineAtOffset(100, 600);

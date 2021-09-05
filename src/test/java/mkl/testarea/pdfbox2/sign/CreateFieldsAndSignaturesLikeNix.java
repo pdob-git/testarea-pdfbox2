@@ -32,6 +32,7 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
@@ -138,7 +139,7 @@ public class CreateFieldsAndSignaturesLikeNix {
 
         // Adobe Acrobat uses Helvetica as a default font and
         // stores that under the name '/Helv' in the resources dictionary
-        PDFont font = PDType1Font.HELVETICA;
+        PDFont font = new PDType1Font(FontName.HELVETICA);
         PDResources resources = new PDResources();
         resources.put(COSName.getPDFName("Helv"), font);
 
@@ -240,7 +241,7 @@ public class CreateFieldsAndSignaturesLikeNix {
 
                 // Adobe Acrobat uses Helvetica as a default font and
                 // stores that under the name '/Helv' in the resources dictionary
-                PDFont font = PDType1Font.HELVETICA;
+                PDFont font = new PDType1Font(FontName.HELVETICA);
                 PDResources resources = new PDResources();
                 resources.put(COSName.getPDFName("Helv"), font);
 
@@ -368,7 +369,7 @@ public class CreateFieldsAndSignaturesLikeNix {
                      break;
              }
              form.setBBox(bbox);
-             PDFont font = PDType1Font.HELVETICA_BOLD;
+             PDFont font = new PDType1Font(FontName.HELVETICA_BOLD);
         
              // from PDVisualSigBuilder.createAppearanceDictionary()
              PDAppearanceDictionary appearance = new PDAppearanceDictionary();
@@ -558,7 +559,7 @@ public class CreateFieldsAndSignaturesLikeNix {
 
                 // Adobe Acrobat uses Helvetica as a default font and
                 // stores that under the name '/Helv' in the resources dictionary
-                PDFont font = PDType1Font.HELVETICA;
+                PDFont font = new PDType1Font(FontName.HELVETICA);
                 PDResources resources = new PDResources();
                 resources.put(COSName.getPDFName("Helv"), font);
 
@@ -691,7 +692,7 @@ public class CreateFieldsAndSignaturesLikeNix {
                      break;
              }
              form.setBBox(bbox);
-             PDFont font = PDType1Font.HELVETICA_BOLD;
+             PDFont font = new PDType1Font(FontName.HELVETICA_BOLD);
         
              // from PDVisualSigBuilder.createAppearanceDictionary()
              PDAppearanceDictionary appearance = new PDAppearanceDictionary();
