@@ -31,6 +31,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceDictionary;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceStream;
@@ -57,10 +58,12 @@ import org.bouncycastle.util.Store;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.common.io.ByteStreams;
+
 public class CreateMultipleVisualizations implements SignatureInterface {
     final static File RESULT_FOLDER = new File("target/test-outputs", "sign");
 
-    public static final String KEYSTORE = "keystores/demo-rsa2048.ks"; 
+    public static final String KEYSTORE = "keystores/demo-rsa2048.p12"; 
     public static final char[] PASSWORD = "demo-rsa2048".toCharArray(); 
 
     public static KeyStore ks = null;
@@ -227,6 +230,100 @@ public class CreateMultipleVisualizations implements SignatureInterface {
             cs.newLine();
             cs.showText("let's keep talking");
             cs.endText();
+        }
+
+        pdPage.getAnnotations().add(widget);
+        
+        COSDictionary pageTreeObject = pdPage.getCOSObject(); 
+        while (pageTreeObject != null) {
+            pageTreeObject.setNeedToBeUpdated(true);
+            pageTreeObject = (COSDictionary) pageTreeObject.getDictionaryObject(COSName.PARENT);
+        }
+    }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/69835549/java-uses-pdfbox-to-add-digital-signature-to-pdf">
+     * Java uses pdfbox to add digital signature to pdf
+     * </a>
+     * <p>
+     * Indeed, merely adding the image to the signature appearance in
+     * {@link #addImageOnlySignatureField(PDDocument, PDPage, PDRectangle, PDSignature)}
+     * results in Adobe Reader being in trouble. With a slight change, though, it can
+     * be soothed, even a comment suffices!
+     * </p>
+     */
+    @Test
+    public void testCreateSignatureWithMultipleImageOnlyVisualizations() throws IOException {
+        try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/analyze/test-rivu.pdf");
+                OutputStream result = new FileOutputStream(new File(RESULT_FOLDER, "testSignedMultipleImageOnlyVisualizations.pdf"));
+                PDDocument pdDocument = Loader.loadPDF(resource)   )
+        {
+            PDAcroForm acroForm = pdDocument.getDocumentCatalog().getAcroForm();
+            if (acroForm == null) {
+                pdDocument.getDocumentCatalog().setAcroForm(acroForm = new PDAcroForm(pdDocument));
+            }
+            acroForm.setSignaturesExist(true);
+            acroForm.setAppendOnly(true);
+            acroForm.getCOSObject().setDirect(true);
+
+            PDRectangle rectangle = new PDRectangle(100, 600, 300, 100);
+            PDSignature signature = new PDSignature();
+            signature.setFilter(PDSignature.FILTER_ADOBE_PPKLITE);
+            signature.setSubFilter(PDSignature.SUBFILTER_ADBE_PKCS7_DETACHED);
+            signature.setName("Example User");
+            signature.setLocation("Los Angeles, CA");
+            signature.setReason("Testing");
+            signature.setSignDate(Calendar.getInstance());
+            pdDocument.addSignature(signature, this);
+
+            for (PDPage pdPage : pdDocument.getPages()) {
+                addImageOnlySignatureField(pdDocument, pdPage, rectangle, signature);
+            }
+
+            pdDocument.saveIncremental(result);
+        }
+    }
+
+    /**
+     * Based on {@link #addSignatureField(PDDocument, PDPage, PDRectangle, PDSignature)},
+     * merely with a bitmap image instead of text content. Also a comment is added, see
+     * {@link #testCreateSignatureWithMultipleImageOnlyVisualizations()}.
+     */
+    void addImageOnlySignatureField(PDDocument pdDocument, PDPage pdPage, PDRectangle rectangle, PDSignature signature) throws IOException {
+        PDAcroForm acroForm = pdDocument.getDocumentCatalog().getAcroForm();
+        List<PDField> acroFormFields = acroForm.getFields();
+
+        PDSignatureField signatureField = new PDSignatureField(acroForm);
+        signatureField.setValue(signature);
+        PDAnnotationWidget widget = signatureField.getWidgets().get(0);
+        acroFormFields.add(signatureField);
+
+        widget.setRectangle(rectangle);
+        widget.setPage(pdPage);
+
+        // from PDVisualSigBuilder.createHolderForm()
+        PDStream stream = new PDStream(pdDocument);
+        PDFormXObject form = new PDFormXObject(stream);
+        PDResources res = new PDResources();
+        form.setResources(res);
+        form.setFormType(1);
+        PDRectangle bbox = new PDRectangle(rectangle.getWidth(), rectangle.getHeight());
+
+        form.setBBox(bbox);
+
+        // from PDVisualSigBuilder.createAppearanceDictionary()
+        PDAppearanceDictionary appearance = new PDAppearanceDictionary();
+        appearance.getCOSObject().setDirect(true);
+        PDAppearanceStream appearanceStream = new PDAppearanceStream(form.getCOSObject());
+        appearance.setNormalAppearance(appearanceStream);
+        widget.setAppearance(appearance);
+
+        try (   PDPageContentStream cs = new PDPageContentStream(pdDocument, appearanceStream);
+                InputStream imageResource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/content/Willi-1.jpg") )
+        {
+            PDImageXObject pdImage = PDImageXObject.createFromByteArray(pdDocument, ByteStreams.toByteArray(imageResource), "Willi");
+            cs.addComment("This is a comment");
+            cs.drawImage(pdImage, 0, 0, rectangle.getWidth(), rectangle.getHeight());
         }
 
         pdPage.getAnnotations().add(widget);
