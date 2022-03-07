@@ -8,7 +8,7 @@
 	<name>Test area for public PDFBox v2 issues on stackoverflow etc</name>
 	<properties>
 		<pdfbox.version>[2.0.0,3.0.0)</pdfbox.version>
-		<bc.version>1.54</bc.version>
+		<bc.version>1.69</bc.version>
 		<junit.version>4.13.1</junit.version>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
