@@ -950,4 +950,31 @@ public class ExtractText
             document.close();
         }
     }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/73261590/pdfbox-cant-read-some-pdfs">
+     * PDFBox can't read some PDF's
+     * </a>
+     * <br/>
+     * <a href="https://ufile.io/p86kolu3">
+     * Orchesterdienstplan I  8.8.-4.12.22.pdf
+     * </a>
+     * <p>
+     * At first glance the text extracts just fine...
+     * </p>
+     */
+    @Test
+    public void testOrchesterdienstplanI8_8_4_12_22() throws IOException {
+        try (
+            InputStream resource = getClass().getResourceAsStream("Orchesterdienstplan I  8.8.-4.12.22.pdf");
+            PDDocument pdDocument = Loader.loadPDF(resource)
+        ) {
+            PDFTextStripper stripper = new PDFTextStripper();
+            stripper.setShouldSeparateByBeads(true);
+            String text = stripper.getText(pdDocument);
+
+            System.out.printf("\n*\n* Orchesterdienstplan I  8.8.-4.12.22.pdf\n*\n%s\n", text);
+            Files.write(new File(RESULT_FOLDER, "Orchesterdienstplan I  8.8.-4.12.22.txt").toPath(), Collections.singleton(text));
+        }
+    }
 }
