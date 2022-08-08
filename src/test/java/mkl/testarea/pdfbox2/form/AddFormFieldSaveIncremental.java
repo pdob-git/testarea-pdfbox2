@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.cos.COSObject;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -47,7 +46,7 @@ public class AddFormFieldSaveIncremental {
     @Test
     public void testTestSemnat() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("test-semnat.pdf"); ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
 
             PDPage page = document.getPage(0);
 

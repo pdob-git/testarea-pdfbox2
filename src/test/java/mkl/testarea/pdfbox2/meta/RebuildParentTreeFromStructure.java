@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSArray;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSDictionary;
@@ -48,7 +47,7 @@ public class RebuildParentTreeFromStructure {
     @Test
     public void testTestdatei() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("Testdatei.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             rebuildParentTree(document);
             document.save(new File(RESULT_FOLDER, "Testdatei-rebuiltParents.pdf"));
         }
@@ -74,7 +73,7 @@ public class RebuildParentTreeFromStructure {
     @Test
     public void testMathpdf() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("mathpdf.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             rebuildParentTree(document);
             document.save(new File(RESULT_FOLDER, "mathpdf-rebuiltParents.pdf"));
         }
@@ -100,7 +99,7 @@ public class RebuildParentTreeFromStructure {
     @Test
     public void testRes29_08_19() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("res29_08_19.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             rebuildParentTree(document);
             document.save(new File(RESULT_FOLDER, "res29_08_19-rebuiltParents.pdf"));
         }

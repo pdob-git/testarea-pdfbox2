@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.TextPosition;
@@ -42,7 +41,7 @@ public class ExtractCharacterCodes {
     public void testExtractFromSingNepChar() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("singNepChar.pdf")    )
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFTextStripper stripper = new PDFTextStripper() {
                 @Override
                 protected void writeString(String text, List<TextPosition> textPositions) throws IOException {
@@ -78,7 +77,7 @@ public class ExtractCharacterCodes {
     public void testExtractFromPattern3() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("pattern3.pdf")    )
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFTextStripper stripper = new PDFTextStripper() {
                 
                 @Override

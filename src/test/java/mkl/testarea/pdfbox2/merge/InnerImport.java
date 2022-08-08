@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.multipdf.LayerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
@@ -41,7 +40,7 @@ public class InnerImport {
     @Test
     public void testImportAsFormLikeGuyard() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("Pour Ronald - PDF Autocad reduit.pdf")) {
-            PDDocument pdDocument = Loader.loadPDF(resource);
+            PDDocument pdDocument = PDDocument.load(resource);
             PDFormXObject pageForm = new LayerUtility(pdDocument).importPageAsForm(pdDocument, 0);
             System.out.println(pageForm.getMatrix());
         }

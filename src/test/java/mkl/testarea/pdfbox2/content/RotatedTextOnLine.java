@@ -7,7 +7,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.util.Matrix;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,7 +43,7 @@ public class RotatedTextOnLine {
         cos.beginText();
         String text = "0.72";
         cos.newLineAtOffset(50, 5);
-        cos.setFont(new PDType1Font(FontName.HELVETICA_BOLD), 12);
+        cos.setFont(PDType1Font.HELVETICA_BOLD, 12);
         cos.showText(text);
         cos.endText();
         cos.close();

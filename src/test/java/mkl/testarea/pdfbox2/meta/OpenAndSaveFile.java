@@ -3,7 +3,6 @@ package mkl.testarea.pdfbox2.meta;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.junit.BeforeClass;
@@ -35,7 +34,7 @@ public class OpenAndSaveFile {
     @Test
     public void testOpenAndSaveAsposeOutputTemp() throws InvalidPasswordException, IOException {
         File originalPdfFile = new File("src/test/resources/mkl/testarea/pdfbox2/meta/AsposeOutput_temp.pdf");
-        PDDocument originalDocument = Loader.loadPDF(originalPdfFile);
+        PDDocument originalDocument = PDDocument.load(originalPdfFile);
         originalDocument.save(new File(RESULT_FOLDER, "pdfBoxGen.pdf"));
     }
 

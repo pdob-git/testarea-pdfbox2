@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -47,7 +46,7 @@ public class AddFormField {
     public void testAddFieldLikeEugenePodoliako() throws IOException {
         try (   InputStream originalStream = getClass().getResourceAsStream("4.pdf") )
         {
-            PDDocument pdf = Loader.loadPDF(originalStream);
+            PDDocument pdf = PDDocument.load(originalStream);
             PDDocumentCatalog docCatalog = pdf.getDocumentCatalog();
             PDAcroForm acroForm = docCatalog.getAcroForm();
             PDPage page = pdf.getPage(0);

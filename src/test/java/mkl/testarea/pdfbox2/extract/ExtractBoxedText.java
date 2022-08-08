@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -44,7 +43,7 @@ public class ExtractBoxedText {
     @Test
     public void testExtractBoxes() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("Programare-licenta-5-Iulie-2018_1.pdf");
-                PDDocument document = Loader.loadPDF(resource) ) {
+                PDDocument document = PDDocument.load(resource) ) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfBoxFinder boxFinder = new PdfBoxFinder(page);
                 boxFinder.processPage(page);
@@ -71,7 +70,7 @@ public class ExtractBoxedText {
     @Test
     public void testDrawBoxes() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("Programare-licenta-5-Iulie-2018_1.pdf");
-                PDDocument document = Loader.loadPDF(resource) ) {
+                PDDocument document = PDDocument.load(resource) ) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfBoxFinder boxFinder = new PdfBoxFinder(page);
                 boxFinder.processPage(page);
@@ -104,7 +103,7 @@ public class ExtractBoxedText {
     @Test
     public void testExtractBoxedTexts() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("Programare-licenta-5-Iulie-2018_1.pdf");
-                PDDocument document = Loader.loadPDF(resource) ) {
+                PDDocument document = PDDocument.load(resource) ) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfBoxFinder boxFinder = new PdfBoxFinder(page);
                 boxFinder.processPage(page);
@@ -139,7 +138,7 @@ public class ExtractBoxedText {
     @Test
     public void testExtractBoxedTextsTestWPhromma() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("testWPhromma.pdf");
-                PDDocument document = Loader.loadPDF(resource) ) {
+                PDDocument document = PDDocument.load(resource) ) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfBoxFinder boxFinder = new PdfBoxFinder(page);
                 boxFinder.processPage(page);

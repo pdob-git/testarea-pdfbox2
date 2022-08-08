@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.multipdf.Overlay;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -49,8 +48,8 @@ public class OverlayDocuments {
     public void testOverlayWithMultiply() throws IOException {
         try (   InputStream file1 = getClass().getResourceAsStream("10.pdf");
                 InputStream file2 = getClass().getResourceAsStream("114.pdf");
-                PDDocument document1 = Loader.loadPDF(file1);
-                PDDocument document2 = Loader.loadPDF(file2);
+                PDDocument document1 = PDDocument.load(file1);
+                PDDocument document2 = PDDocument.load(file2);
                 Overlay overlayer = new Overlay()) {
             overlayer.setInputPDF(document1);
             overlayer.setAllPagesOverlayPDF(document2);
@@ -84,7 +83,7 @@ public class OverlayDocuments {
     public void testOverlayExampleBroken() throws IOException {
         try (   InputStream exampleBrokenFile = getClass().getResourceAsStream("example_broken.pdf");
                 PDDocument empty = new PDDocument();
-                PDDocument exampleBroken = Loader.loadPDF(exampleBrokenFile);
+                PDDocument exampleBroken = PDDocument.load(exampleBrokenFile);
                 Overlay overlayer = new Overlay()   ) {
             empty.addPage(new PDPage());
             overlayer.setInputPDF(empty);
@@ -116,7 +115,7 @@ public class OverlayDocuments {
     public void testOverlayPreparationExampleBroken() throws IOException {
         try (   InputStream exampleBrokenFile = getClass().getResourceAsStream("example_broken.pdf");
                 PDDocument finalOverlayDoc = new PDDocument();
-                PDDocument overlayDocument = Loader.loadPDF(exampleBrokenFile) ) {
+                PDDocument overlayDocument = PDDocument.load(exampleBrokenFile) ) {
             Iterator<PDPage> overlayIterator = overlayDocument.getPages().iterator();
             while(overlayIterator.hasNext()) {
                 PDPage pg = overlayIterator.next();
@@ -149,7 +148,7 @@ public class OverlayDocuments {
     public void testOverlayPreparationFixedExampleBroken() throws IOException {
         try (   InputStream exampleBrokenFile = getClass().getResourceAsStream("example_broken.pdf");
                 PDDocument finalOverlayDoc = new PDDocument();
-                PDDocument overlayDocument = Loader.loadPDF(exampleBrokenFile) ) {
+                PDDocument overlayDocument = PDDocument.load(exampleBrokenFile) ) {
             Iterator<PDPage> overlayIterator = overlayDocument.getPages().iterator();
             while(overlayIterator.hasNext()) {
                 PDPage pg = overlayIterator.next();

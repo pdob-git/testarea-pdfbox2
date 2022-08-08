@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
@@ -35,7 +34,7 @@ public class ShowFormFieldNames
         String resourceName = "ds872.pdf";
         try (   InputStream resource = getClass().getResourceAsStream(resourceName) )
         {
-            PDDocument pdDocument = Loader.loadPDF(resource);
+            PDDocument pdDocument = PDDocument.load(resource);
             List<String> fieldNames = getFormFieldNames(pdDocument);
 
             System.out.printf("\nForm field names of '%s':\n", resourceName);

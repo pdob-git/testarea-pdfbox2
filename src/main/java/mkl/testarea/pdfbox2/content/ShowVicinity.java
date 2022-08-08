@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.pdfwriter.ContentStreamWriter;
@@ -47,7 +46,7 @@ public class ShowVicinity {
     }
 
     public void addVicinity(File source, File target) throws IOException {
-        try (   PDDocument document = Loader.loadPDF(source)    ) {
+        try (   PDDocument document = PDDocument.load(source)    ) {
             for (PDPage page : document.getPages()) {
                 page.setArtBox(null);
                 page.setTrimBox(null);

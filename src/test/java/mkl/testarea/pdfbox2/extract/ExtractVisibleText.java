@@ -7,7 +7,6 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.Collections;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.BeforeClass;
@@ -40,7 +39,7 @@ public class ExtractVisibleText {
     @Test
     public void testExtractFromRevTeaser09072016() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("RevTeaser09072016.pdf")  ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFTextStripper stripper = new PDFVisibleTextStripper(true);
             //stripper.setSortByPosition(true);
             String text = stripper.getText(document);
@@ -74,7 +73,7 @@ public class ExtractVisibleText {
     @Test
     public void testTestDmitryK() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("testDmitryK.pdf")  ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFTextStripper stripper = new PDFVisibleTextStripper();
             stripper.setSortByPosition(true);
             String text = stripper.getText(document);
@@ -107,7 +106,7 @@ public class ExtractVisibleText {
     @Test
     public void testTest2DmitryK() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("test2DmitryK.pdf")  ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFTextStripper stripper = new PDFVisibleTextStripper();
             stripper.setSortByPosition(true);
             String text = stripper.getText(document);
@@ -136,7 +135,7 @@ public class ExtractVisibleText {
     @Test
     public void test00000000000005fw6q() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("00000000000005fw6q.pdf")  ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFTextStripper stripper = new PDFVisibleTextStripper();
             stripper.setSortByPosition(true);
             String text = stripper.getText(document);
@@ -164,7 +163,7 @@ public class ExtractVisibleText {
     @Test
     public void test1() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("1.pdf")  ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFTextStripper stripper = new PDFVisibleTextStripper(false, new PrintStream(new File(RESULT_FOLDER, "1-drops.txt")));
             stripper.setSortByPosition(true);
             String text = stripper.getText(document);
@@ -194,7 +193,7 @@ public class ExtractVisibleText {
     @Test
     public void testFat1() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("1.pdf")  ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFVisibleTextStripper stripper = new PDFVisibleTextStripper();
             stripper.setUseFatGlyphOrigin(true);
             stripper.setSortByPosition(true);
@@ -223,7 +222,7 @@ public class ExtractVisibleText {
     @Test
     public void testExtractFatFromRevTeaser09072016() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("RevTeaser09072016.pdf")  ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFVisibleTextStripper stripper = new PDFVisibleTextStripper(true);
             stripper.setUseFatGlyphOrigin(true);
             //stripper.setSortByPosition(true);
@@ -252,7 +251,7 @@ public class ExtractVisibleText {
     @Test
     public void testFatTest2DmitryK() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("test2DmitryK.pdf")  ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFVisibleTextStripper stripper = new PDFVisibleTextStripper();
             stripper.setUseFatGlyphOrigin(true);
             stripper.setSortByPosition(true);
@@ -280,7 +279,7 @@ public class ExtractVisibleText {
     @Test
     public void testExtractFromFooterText() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("FooterText.pdf")  ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFTextStripper stripper = new PDFVisibleTextStripper(true);
             //stripper.setSortByPosition(true);
             String text = stripper.getText(document);

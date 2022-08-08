@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -54,7 +53,7 @@ public class ExtractTextSections
                 );
         try (   InputStream resource = getClass().getResourceAsStream("Wang05a.pdf")    )
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDFTextSectionStripper stripper = new PDFTextSectionStripper(sectionDefinitions);
             stripper.getText(document);
 

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSFloat;
@@ -54,7 +53,7 @@ public class EditPageContent {
     @Test
     public void testIdentityInput() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("input.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfContentStreamEditor identity = new PdfContentStreamEditor(document, page);
                 identity.processPage(page);
@@ -78,7 +77,7 @@ public class EditPageContent {
     @Test
     public void testRemoveBigTextDocument() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("document.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfContentStreamEditor identity = new PdfContentStreamEditor(document, page) {
                     @Override
@@ -132,7 +131,7 @@ public class EditPageContent {
     @Test
     public void testSortDrawsCengage1() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("Cengage1.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfContentStreamEditor identity = new PdfContentStreamEditor(document, page) {
                     Rectangle2D[] rectangles = new Rectangle2D[] {new Rectangle2D.Float(67, 567, 135, 85),
@@ -219,7 +218,7 @@ public class EditPageContent {
     @Test
     public void testRemoveBigTextKommersAnnonsElite() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("kommers_annons_elite.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             PDPage page = document.getPage(0);
             PdfContentStreamEditor editor = new PdfContentStreamEditor(document, page) {
                 @Override
@@ -258,7 +257,7 @@ public class EditPageContent {
     @Test
     public void testRemoveTextDocument() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("document.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfContentStreamEditor identity = new PdfContentStreamEditor(document, page) {
                     @Override
@@ -306,7 +305,7 @@ public class EditPageContent {
     @Test
     public void testRemoveQrTextNuevo() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("nuevo.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfContentStreamEditor editor = new PdfContentStreamEditor(document, page) {
                     final StringBuilder recentChars = new StringBuilder();
@@ -359,7 +358,7 @@ public class EditPageContent {
     @Test
     public void testRemoveClipPdfbox2138() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("PDFBOX-2138.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfContentStreamEditor identity = new PdfContentStreamEditor(document, page) {
                     @Override
@@ -399,7 +398,7 @@ public class EditPageContent {
         float[] replacementColor = new float[] {.1f, .7f, .6f};
 
         try (   InputStream resource = getClass().getResourceAsStream("gridShapesModified.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfContentStreamEditor identity = new PdfContentStreamEditor(document, page) {
                     @Override

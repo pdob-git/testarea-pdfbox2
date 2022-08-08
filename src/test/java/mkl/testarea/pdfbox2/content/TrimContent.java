@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -37,7 +36,7 @@ public class TrimContent {
     public void testTrimCengage1() throws IOException {
         PDRectangle box = new PDRectangle(200, 300, 300, 400);
         try (InputStream resource = getClass().getResourceAsStream("Cengage1.pdf")) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             for (PDPage page : document.getPages()) {
                 PDRectangle cropBox = page.getCropBox();
                 try (PDPageContentStream canvas = new PDPageContentStream(document, page, AppendMode.APPEND, false, true)) {
@@ -64,7 +63,7 @@ public class TrimContent {
     public void testTrimAndCenterCengage1() throws IOException {
         PDRectangle box = new PDRectangle(200, 300, 300, 400);
         try (InputStream resource = getClass().getResourceAsStream("Cengage1.pdf")) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             for (PDPage page : document.getPages()) {
                 PDRectangle cropBox = page.getCropBox();
                 cropBox = centerBoxAroundBox(box, cropBox.getWidth(), cropBox.getHeight());

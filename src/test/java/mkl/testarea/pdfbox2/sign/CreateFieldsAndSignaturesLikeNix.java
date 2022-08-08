@@ -20,7 +20,6 @@ import java.security.cert.CertificateException;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.examples.signature.CreateSignatureBase;
@@ -32,7 +31,6 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
@@ -109,7 +107,7 @@ public class CreateFieldsAndSignaturesLikeNix {
 
         try (
             InputStream resource = getClass().getResourceAsStream("hello.pdf");
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
         ) {
             tagPDFSignatureFields(document);
             document.save(withFields);
@@ -139,7 +137,7 @@ public class CreateFieldsAndSignaturesLikeNix {
 
         // Adobe Acrobat uses Helvetica as a default font and
         // stores that under the name '/Helv' in the resources dictionary
-        PDFont font = new PDType1Font(FontName.HELVETICA);
+        PDFont font = PDType1Font.HELVETICA;
         PDResources resources = new PDResources();
         resources.put(COSName.getPDFName("Helv"), font);
 
@@ -230,7 +228,7 @@ public class CreateFieldsAndSignaturesLikeNix {
         
         private void addEmptySignField(String[] args) throws Exception, IOException {
             // Create a new document with an empty page.
-            try (PDDocument document = Loader.loadPDF(new File(args[0]));)
+            try (PDDocument document = PDDocument.load(new File(args[0]));)
             {
                 
                 PDPage page = document.getPage(0);
@@ -241,7 +239,7 @@ public class CreateFieldsAndSignaturesLikeNix {
 
                 // Adobe Acrobat uses Helvetica as a default font and
                 // stores that under the name '/Helv' in the resources dictionary
-                PDFont font = new PDType1Font(FontName.HELVETICA);
+                PDFont font = PDType1Font.HELVETICA;
                 PDResources resources = new PDResources();
                 resources.put(COSName.getPDFName("Helv"), font);
 
@@ -369,7 +367,7 @@ public class CreateFieldsAndSignaturesLikeNix {
                      break;
              }
              form.setBBox(bbox);
-             PDFont font = new PDType1Font(FontName.HELVETICA_BOLD);
+             PDFont font = PDType1Font.HELVETICA_BOLD;
         
              // from PDVisualSigBuilder.createAppearanceDictionary()
              PDAppearanceDictionary appearance = new PDAppearanceDictionary();
@@ -548,7 +546,7 @@ public class CreateFieldsAndSignaturesLikeNix {
         
         private void addEmptySignField(String[] args) throws Exception, IOException {
             // Create a new document with an empty page.
-            try (PDDocument document = Loader.loadPDF(new File(args[0]));)
+            try (PDDocument document = PDDocument.load(new File(args[0]));)
             {
                 
                 PDPage page = document.getPage(0);
@@ -559,7 +557,7 @@ public class CreateFieldsAndSignaturesLikeNix {
 
                 // Adobe Acrobat uses Helvetica as a default font and
                 // stores that under the name '/Helv' in the resources dictionary
-                PDFont font = new PDType1Font(FontName.HELVETICA);
+                PDFont font = PDType1Font.HELVETICA;
                 PDResources resources = new PDResources();
                 resources.put(COSName.getPDFName("Helv"), font);
 
@@ -692,7 +690,7 @@ public class CreateFieldsAndSignaturesLikeNix {
                      break;
              }
              form.setBBox(bbox);
-             PDFont font = new PDType1Font(FontName.HELVETICA_BOLD);
+             PDFont font = PDType1Font.HELVETICA_BOLD;
         
              // from PDVisualSigBuilder.createAppearanceDictionary()
              PDAppearanceDictionary appearance = new PDAppearanceDictionary();

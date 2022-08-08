@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -46,7 +45,7 @@ public class ScalePageWithAnnots {
     public void testForPereZix() throws IOException {
         try (
             InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/sign/sampleSignedByAlias.pdf");
-            PDDocument pdf = Loader.loadPDF(resource)
+            PDDocument pdf = PDDocument.load(resource)
         ) {
             float letterWidth = PDRectangle.A5.getWidth();
             float letterHeight = PDRectangle.A5.getHeight();

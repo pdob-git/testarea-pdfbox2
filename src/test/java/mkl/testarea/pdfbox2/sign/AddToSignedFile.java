@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -51,7 +50,7 @@ public class AddToSignedFile {
     public void testAddImageAnnotation() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("SignatureVlidationTest.pdf");
                 InputStream imageResource = getClass().getResourceAsStream("green-tick-png-green-tick-icon-image-14141-1000.png");
-                PDDocument document = Loader.loadPDF(resource);
+                PDDocument document = PDDocument.load(resource);
                 ) {
             PDImageXObject image = PDImageXObject.createFromByteArray(document, ByteStreams.toByteArray(imageResource), "Green tick");
 

@@ -1,10 +1,12 @@
 package mkl.testarea.pdfbox2.form;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -12,8 +14,6 @@ import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author mkl
@@ -42,7 +42,7 @@ public class RemoveXfa {
     @Test
     public void testRemoveXfaAndUr3FromPDF_orig_anon() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("PDF_orig_anon.pdf")  ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
 
             PDDocumentCatalog documentCatalog = document.getDocumentCatalog();
             PDAcroForm acroForm = documentCatalog.getAcroForm();

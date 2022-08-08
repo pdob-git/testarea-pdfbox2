@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSArray;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
@@ -19,7 +18,6 @@ import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceDictionary;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
@@ -77,7 +75,7 @@ public class DuplicateFields
             PDPage page2 = new PDPage(PDRectangle.A4);
             document.addPage(page2);
 
-            PDFont font = new PDType1Font(FontName.HELVETICA);
+            PDFont font = PDType1Font.HELVETICA;
             PDResources resources = new PDResources();
             resources.put(COSName.getPDFName("Helv"), font);
 
@@ -261,7 +259,7 @@ public class DuplicateFields
         }
 
         try (   InputStream stream = new FileInputStream(new File(RESULT_FOLDER, "duplicateFields.pdf"));
-                PDDocument document = Loader.loadPDF(stream)  )
+                PDDocument document = PDDocument.load(stream)  )
         {
             PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
             for (PDField field : acroForm.getFieldTree())

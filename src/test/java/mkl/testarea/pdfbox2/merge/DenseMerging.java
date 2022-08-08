@@ -13,7 +13,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.util.Matrix;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -76,7 +75,7 @@ public class DenseMerging {
         try (PDPageContentStream canvas = new PDPageContentStream(document, page)) {
             canvas.beginText();
             canvas.setTextMatrix(textMatrix);
-            canvas.setFont(new PDType1Font(FontName.HELVETICA_BOLD), 12);
+            canvas.setFont(PDType1Font.HELVETICA_BOLD, 12);
             canvas.setLeading(14);
             for (String line : lines) {
                 canvas.showText(line);

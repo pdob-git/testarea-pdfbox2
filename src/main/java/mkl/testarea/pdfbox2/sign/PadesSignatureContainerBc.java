@@ -4,7 +4,6 @@ import static org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers.id_aa_signatureTi
 import static org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers.id_aa_signingCertificate;
 import static org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers.id_aa_signingCertificateV2;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -191,7 +190,7 @@ public class PadesSignatureContainerBc implements SignatureInterface {
             try {
                 ASN1EncodableVector unsignedAttributes = new ASN1EncodableVector();
                 byte[] signature = (byte[])params.get(CMSAttributeTableGenerator.SIGNATURE);
-                byte[] timestamp = tsaClient.getTimeStampToken(new ByteArrayInputStream(signature)).getEncoded();
+                byte[] timestamp = tsaClient.getTimeStampToken(signature).getEncoded();
                 unsignedAttributes.add(new Attribute(id_aa_signatureTimeStampToken, new DERSet(ASN1Primitive.fromByteArray(timestamp))));
                 return new AttributeTable(unsignedAttributes);
             } catch (Exception e) {

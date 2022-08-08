@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -41,7 +40,7 @@ public class RotatePageContent
     {
         try (   InputStream resource = getClass().getResourceAsStream("IRJET_Copy_Right_form.pdf")  )
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDPage page = document.getDocumentCatalog().getPages().get(0);
             PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.PREPEND, false, false); 
             cs.transform(Matrix.getRotateInstance(Math.toRadians(45), 0, 0));
@@ -63,7 +62,7 @@ public class RotatePageContent
     {
         try (   InputStream resource = getClass().getResourceAsStream("IRJET_Copy_Right_form.pdf")  )
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDPage page = document.getDocumentCatalog().getPages().get(0);
             PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.PREPEND, false, false); 
             PDRectangle cropBox = page.getCropBox();
@@ -91,7 +90,7 @@ public class RotatePageContent
     {
         try (   InputStream resource = getClass().getResourceAsStream("IRJET_Copy_Right_form.pdf")  )
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDPage page = document.getDocumentCatalog().getPages().get(0);
             PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.PREPEND, false, false);
 
@@ -127,7 +126,7 @@ public class RotatePageContent
     {
         try (   InputStream resource = getClass().getResourceAsStream("IRJET_Copy_Right_form.pdf")  )
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDPage page = document.getDocumentCatalog().getPages().get(0);
             PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.PREPEND, false, false);
             Matrix matrix = Matrix.getRotateInstance(Math.toRadians(45), 0, 0);
@@ -162,7 +161,7 @@ public class RotatePageContent
     {
         try (   InputStream resource = getClass().getResourceAsStream("IRJET_Copy_Right_form.pdf")  )
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDPage page = document.getDocumentCatalog().getPages().get(0);
             PDPageContentStream cs = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.PREPEND, false, false);
             Matrix matrix = Matrix.getRotateInstance(Math.toRadians(45), 0, 0);

@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -45,7 +44,7 @@ public class ChangeAppearance {
     @Test
     public void testRemoveAppearanceSaturation() throws IOException {
         try (   InputStream originalStream = getClass().getResourceAsStream("222-color.pdf");
-                PDDocument pdf = Loader.loadPDF(originalStream) ) {
+                PDDocument pdf = PDDocument.load(originalStream) ) {
             PDAcroForm acroForm = pdf.getDocumentCatalog().getAcroForm();
             PDTerminalField acroField = (PDTerminalField) acroForm.getField("Signature1");
             PDAnnotationWidget widget = acroField.getWidgets().get(0);

@@ -10,7 +10,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -38,7 +37,7 @@ public class TextAndGraphics
     @Test
     public void testDrawTextLineText() throws IOException
     {
-        PDFont font = new PDType1Font(FontName.HELVETICA);
+        PDFont font = PDType1Font.HELVETICA;
         float fontSize = 14;
         float fontHeight = fontSize;
         float leading = 20;

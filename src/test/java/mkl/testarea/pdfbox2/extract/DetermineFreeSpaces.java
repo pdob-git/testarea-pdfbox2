@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.contentstream.PDFGraphicsStreamEngine;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -61,7 +60,7 @@ public class DetermineFreeSpaces {
         
         try (
             InputStream resourceStream = getClass().getResourceAsStream(resource);
-            PDDocument pdDocument = Loader.loadPDF(resourceStream);
+            PDDocument pdDocument = PDDocument.load(resourceStream);
         ) {
             System.out.printf("\nFree %.0fx%.0f regions in %s\n", minWidth, minHeight, name);
 

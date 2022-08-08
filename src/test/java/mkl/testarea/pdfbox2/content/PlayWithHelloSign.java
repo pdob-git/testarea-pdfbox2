@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,7 +43,7 @@ public class PlayWithHelloSign
     public void testAnalyzeInput() throws IOException
     {
         try (   InputStream resource = getClass().getResourceAsStream("input.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   )
+                PDDocument pdDocument = PDDocument.load(resource)   )
         {
             HelloSignAnalyzer helloSignAnalyzer = new HelloSignAnalyzer(pdDocument);
 
@@ -78,7 +77,7 @@ public class PlayWithHelloSign
     public void testClearAddress1Input() throws IOException
     {
         try (   InputStream resource = getClass().getResourceAsStream("input.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   )
+                PDDocument pdDocument = PDDocument.load(resource)   )
         {
             HelloSignAnalyzer helloSignAnalyzer = new HelloSignAnalyzer(pdDocument);
 
@@ -108,7 +107,7 @@ public class PlayWithHelloSign
     public void testClearZipStateDate2Input() throws IOException
     {
         try (   InputStream resource = getClass().getResourceAsStream("input.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   )
+                PDDocument pdDocument = PDDocument.load(resource)   )
         {
             HelloSignAnalyzer helloSignAnalyzer = new HelloSignAnalyzer(pdDocument);
 
@@ -139,7 +138,7 @@ public class PlayWithHelloSign
     public void testClearZipStateDate2SuccessivelyInput() throws IOException
     {
         try (   InputStream resource = getClass().getResourceAsStream("input.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   )
+                PDDocument pdDocument = PDDocument.load(resource)   )
         {
             HelloSignAnalyzer helloSignAnalyzer = new HelloSignAnalyzer(pdDocument);
 

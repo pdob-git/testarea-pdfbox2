@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo;
@@ -38,7 +37,7 @@ public class AddLink {
     @Test
     public void testAddLinkToMwb_I_201711() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/content/mwb_I_201711.pdf")) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
 
             PDPage page = document.getPage(1);
 

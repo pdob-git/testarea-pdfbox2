@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
@@ -42,7 +41,7 @@ public class FillAndFlatten {
     @Test
     public void testLikeAbubakar() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("b3-3.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)    ) {
+                PDDocument pdDocument = PDDocument.load(resource)    ) {
             PDDocumentCatalog catalog = pdDocument.getDocumentCatalog();
             PDAcroForm acroForm = catalog.getAcroForm();
             int i = 0;
@@ -77,7 +76,7 @@ public class FillAndFlatten {
     @Test
     public void testLikeAbubakarRemoveAction() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("b3-3.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)    ) {
+                PDDocument pdDocument = PDDocument.load(resource)    ) {
             PDDocumentCatalog catalog = pdDocument.getDocumentCatalog();
             PDAcroForm acroForm = catalog.getAcroForm();
             int i = 0;
@@ -111,7 +110,7 @@ public class FillAndFlatten {
     @Test
     public void testLikeVinciChung() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("testVinciChung.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)    ) {
+                PDDocument pdDocument = PDDocument.load(resource)    ) {
             PDAcroForm acroForm = pdDocument.getDocumentCatalog().getAcroForm();
 
             String defaultAppearance = "/Helv 12 Tf 0 0 1 rg";

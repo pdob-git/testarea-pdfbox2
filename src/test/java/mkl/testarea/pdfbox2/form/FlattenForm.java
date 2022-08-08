@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,7 +36,7 @@ public class FlattenForm {
     @Test
     public void testFlattenWithSideEffects() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("highlighted pdf.pdf")    ) {
-            PDDocument pdDocument = Loader.loadPDF(resource);
+            PDDocument pdDocument = PDDocument.load(resource);
 
             pdDocument.getDocumentCatalog().getAcroForm().flatten();
 
@@ -63,7 +62,7 @@ public class FlattenForm {
     @Test
     public void testFlattenF1040sbTest() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("f1040sb test.pdf")    ) {
-            PDDocument pdDocument = Loader.loadPDF(resource);
+            PDDocument pdDocument = PDDocument.load(resource);
 
             pdDocument.getDocumentCatalog().getAcroForm().flatten();
 

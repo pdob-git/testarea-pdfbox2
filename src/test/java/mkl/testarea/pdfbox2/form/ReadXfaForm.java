@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
@@ -103,7 +102,7 @@ public class ReadXfaForm
         try
         {
             // String pass = null;
-            doc = Loader.loadPDF(file);
+            doc = PDDocument.load(file);
             if (doc == null)
                 return null;
             // flattenPDF(doc);

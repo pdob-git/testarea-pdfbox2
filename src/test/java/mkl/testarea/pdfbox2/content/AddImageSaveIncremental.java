@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -51,7 +50,7 @@ public class AddImageSaveIncremental {
         try (   InputStream resource = getClass().getResourceAsStream("blank.pdf");
                 InputStream imageResource = getClass().getResourceAsStream("Willi-1.jpg");
                 OutputStream result = new FileOutputStream(oneImage)) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, ByteStreams.toByteArray(imageResource), "Willi");
             addImageLikeUser11465050(document, pdImage);
             document.saveIncremental(result);
@@ -60,7 +59,7 @@ public class AddImageSaveIncremental {
         try (   InputStream resource = new FileInputStream(oneImage);
                 InputStream imageResource = getClass().getResourceAsStream("Willi-1.jpg");
                 OutputStream result = new FileOutputStream(twoImages)) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, ByteStreams.toByteArray(imageResource), "Willi");
             addImageLikeUser11465050(document, pdImage);
             document.saveIncremental(result);
@@ -103,7 +102,7 @@ public class AddImageSaveIncremental {
         try (   InputStream resource = getClass().getResourceAsStream("blank.pdf");
                 InputStream imageResource = getClass().getResourceAsStream("Willi-1.jpg");
                 OutputStream result = new FileOutputStream(oneImage)) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, ByteStreams.toByteArray(imageResource), "Willi");
             addImageLikeUser11465050Improved(document, pdImage);
             document.saveIncremental(result);
@@ -112,7 +111,7 @@ public class AddImageSaveIncremental {
         try (   InputStream resource = new FileInputStream(oneImage);
                 InputStream imageResource = getClass().getResourceAsStream("Willi-1.jpg");
                 OutputStream result = new FileOutputStream(twoImages)) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, ByteStreams.toByteArray(imageResource), "Willi");
             addImageLikeUser11465050Improved(document, pdImage);
             document.saveIncremental(result);

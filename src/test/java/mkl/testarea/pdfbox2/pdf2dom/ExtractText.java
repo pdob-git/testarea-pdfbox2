@@ -8,7 +8,6 @@ import java.io.Writer;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.TextPosition;
 import org.fit.pdfdom.BoxStyle;
@@ -50,7 +49,7 @@ public class ExtractText {
     {
         System.out.printf("\n*\n* demo.pdf\n*\n");
         try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/extract/demo.pdf")    ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
 
             PDFDomTree parser = new PDFDomTree(PDFDomTreeConfig.createDefaultConfig());
             Writer output = new PrintWriter(new File(RESULT_FOLDER, "demo.html"), "utf-8");
@@ -81,7 +80,7 @@ public class ExtractText {
     {
         System.out.printf("\n*\n* demo.pdf improved\n*\n");
         try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/extract/demo.pdf")    ) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
 
             PDFDomTree parser = new PDFDomTree(PDFDomTreeConfig.createDefaultConfig()) {
                 @Override

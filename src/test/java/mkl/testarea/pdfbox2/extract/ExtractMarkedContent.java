@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSArray;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSDictionary;
@@ -50,7 +49,7 @@ public class ExtractMarkedContent {
     public void testExtractTestWPhromma() throws IOException {
         System.out.printf("\n\n===\n%s\n===\n", "testWPhromma.pdf");
         try (   InputStream resource = getClass().getResourceAsStream("testWPhromma.pdf")) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
 
             Map<PDPage, Map<Integer, PDMarkedContent>> markedContents = new HashMap<>();
 
@@ -86,7 +85,7 @@ public class ExtractMarkedContent {
     public void testExtractResMultipage() throws IOException {
         System.out.printf("\n\n===\n%s\n===\n", "res_multipage.pdf");
         try (   InputStream resource = getClass().getResourceAsStream("res_multipage.pdf")) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
 
             Map<PDPage, Map<Integer, PDMarkedContent>> markedContents = new HashMap<>();
 

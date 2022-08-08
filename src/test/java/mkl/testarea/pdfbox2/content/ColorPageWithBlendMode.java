@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
-import org.apache.pdfbox.pdfwriter.compress.CompressParameters;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -40,7 +38,7 @@ public class ColorPageWithBlendMode {
     @Test
     public void testForWithoutBGColor() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("without BG color.PDF");
-                PDDocument document = Loader.loadPDF(resource)  ) {
+                PDDocument document = PDDocument.load(resource)  ) {
             PDExtendedGraphicsState gState = new PDExtendedGraphicsState();
             gState.setBlendMode(BlendMode.DARKEN);
 
@@ -54,7 +52,7 @@ public class ColorPageWithBlendMode {
                 }
             }
 
-            document.save(new File(RESULT_FOLDER, "without BG color-darkened.PDF"), new CompressParameters(0));
+            document.save(new File(RESULT_FOLDER, "without BG color-darkened.PDF"));
         }
     }
 

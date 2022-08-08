@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
@@ -54,7 +55,7 @@ public class MergeXObjectIntoPage {
     @Test
     public void testMergeLikeFascinatingCoder() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("HighPioneerFallNewsletterADApdf_2.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             parseFormXobject(document);
             document.save(new File(RESULT_FOLDER, "HighPioneerFallNewsletterADApdf_2-MergeLikeFascinatingCoder.pdf"));
         }
@@ -63,7 +64,7 @@ public class MergeXObjectIntoPage {
     private PDDocument parseFormXobject(PDDocument document) throws IOException {
         PDDocument newdocument = new PDDocument();
         for (int pg_ind = 0; pg_ind < document.getNumberOfPages(); pg_ind++) {
-            List<Object> tokens1 = new PDFStreamParser(document.getPage(pg_ind)).parse(); //(List<Object>) (getTokens(document)).get(pg_ind);
+            List<Object> tokens1 = (List<Object>) (getTokens(document, pg_ind)).get(pg_ind);
             PDStream newContents = new PDStream(document);
             OutputStream out = newContents.createOutputStream(COSName.FLATE_DECODE);
             ContentStreamWriter writer = new ContentStreamWriter(out);
@@ -83,8 +84,8 @@ public class MergeXObjectIntoPage {
                 if (xObject instanceof PDFormXObject) {
 
                     PDFStreamParser parser = new PDFStreamParser(((PDFormXObject) xObject));
-                    //parser.parse();
-                    List<Object>  tokens3 = parser.parse(); //parser.getTokens();
+                    parser.parse();
+                    List<Object>  tokens3 = parser.getTokens();
                     int ind =0;
                     System.out.println(xObjectName.getName());
                         for (COSName colorname :((PDFormXObject) xObject).getResources().getColorSpaceNames())
@@ -178,5 +179,16 @@ public class MergeXObjectIntoPage {
             newdocument.addPage(document.getPage(pg_ind));
         }
         return newdocument;
+    }
+
+    private static Map getTokens(PDDocument oldDocument, Integer pageIndex) throws IOException {
+        // TODO Auto- it will return the tokens of pdf
+        Map oldDocumentTokens = new HashMap();
+        PDPage pg = oldDocument.getPage(pageIndex);
+        PDFStreamParser parser = new PDFStreamParser(pg);
+        parser.parse();
+        List<Object> tokens = /*PDFUtils.removeTokens*/(parser.getTokens());
+        oldDocumentTokens.put(pageIndex, tokens);
+        return oldDocumentTokens;
     }
 }

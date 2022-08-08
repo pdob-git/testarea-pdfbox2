@@ -8,7 +8,6 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.junit.BeforeClass;
@@ -79,7 +78,7 @@ public class RenderPage
         File result = new File(RESULT_FOLDER, "2E5D18CD314DC6B7E236C8546A2918.png");
         try (   InputStream resource = getClass().getResourceAsStream("2E5D18CD314DC6B7E236C8546A2918.pdf"))
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
 
             PDFRenderer renderer = new PDFRenderer(document);
             BufferedImage image = renderer.renderImageWithDPI(0, 96); //Gets stuck here
@@ -105,7 +104,7 @@ public class RenderPage
     {
         try (   InputStream resource = getClass().getResourceAsStream("sample1.pdf"))
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
 
             PDFRenderer renderer = new PDFRenderer(document);
 

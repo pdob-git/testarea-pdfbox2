@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mkl.testarea.pdfbox2</groupId>
 	<artifactId>testarea-pdfbox2</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${pdfbox.version}</version>
 	<name>Test area for public PDFBox v2 issues on stackoverflow etc</name>
 	<properties>
-		<pdfbox.version>[2.0.0,3.0.0)</pdfbox.version>
-		<bc.version>1.69</bc.version>
+		<pdfbox.version>2.0.27-SNAPSHOT</pdfbox.version>
+		<bc.version>1.70</bc.version>
 		<junit.version>4.13.1</junit.version>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>

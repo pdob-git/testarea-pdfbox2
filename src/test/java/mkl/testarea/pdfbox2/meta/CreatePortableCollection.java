@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -37,7 +36,7 @@ public class CreatePortableCollection
     public void test() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/sign/test.pdf"))
         {
-            PDDocument pdDocument = Loader.loadPDF(resource);
+            PDDocument pdDocument = PDDocument.load(resource);
 
             COSDictionary collectionDictionary = new COSDictionary();
             collectionDictionary.setName(COSName.TYPE, "Collection");

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -44,7 +43,7 @@ public class ReuseExistingFont {
      */
     @Test
     public void testReuseProtokolLikeJnovacho() throws IOException {
-        try (PDDocument document = Loader.loadPDF(getClass().getResourceAsStream("protokol.pdf"))) {
+        try (PDDocument document = PDDocument.load(getClass().getResourceAsStream("protokol.pdf"))) {
             PDPage page = document.getPage(0);
             PDResources res = page.getResources();
 

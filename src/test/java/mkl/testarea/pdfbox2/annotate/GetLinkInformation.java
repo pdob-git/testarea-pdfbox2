@@ -3,7 +3,6 @@ package mkl.testarea.pdfbox2.annotate;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.interactive.action.PDAction;
@@ -35,7 +34,7 @@ public class GetLinkInformation {
     @Test
     public void testGetLinkPageNumber() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("NBSampleForStackOverflow.pdf");
-                PDDocument doc = Loader.loadPDF(resource)   ) {
+                PDDocument doc = PDDocument.load(resource)   ) {
             int pageNo = 0;
             for (PDPage page : doc.getPages()) {
                 pageNo++;

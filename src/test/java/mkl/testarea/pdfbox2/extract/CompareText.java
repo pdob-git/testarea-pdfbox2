@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Collections;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -52,8 +51,8 @@ public class CompareText {
         try (   InputStream resource1 = getClass().getResourceAsStream(pdfFile1);
                 InputStream resource2 = getClass().getResourceAsStream(pdfFile2)) {
             
-            PDDocument pdf1 = Loader.loadPDF(resource1);
-            PDDocument pdf2 = Loader.loadPDF(resource2);
+            PDDocument pdf1 = PDDocument.load(resource1);
+            PDDocument pdf2 = PDDocument.load(resource2);
             PDPageTree pdf1pages = pdf1.getDocumentCatalog().getPages();
             PDPageTree pdf2pages = pdf2.getDocumentCatalog().getPages();
             try

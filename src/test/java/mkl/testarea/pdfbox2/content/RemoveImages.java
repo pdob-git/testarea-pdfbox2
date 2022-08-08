@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -43,7 +42,7 @@ public class RemoveImages {
     @Test
     public void testReplaceResourcesES1315248() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/extract/ES1315248.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)    ) {
+                PDDocument pdDocument = PDDocument.load(resource)    ) {
             replaceBitmapImagesResources(pdDocument);
             pdDocument.save(new File(RESULT_FOLDER, "ES1315248-noImages.pdf"));
         }
@@ -67,7 +66,7 @@ public class RemoveImages {
     @Test
     public void testReplaceResourcesTestDrJorge() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("testDrJorge.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)    ) {
+                PDDocument pdDocument = PDDocument.load(resource)    ) {
             replaceBitmapImagesResources(pdDocument);
             pdDocument.save(new File(RESULT_FOLDER, "testDrJorge-noImages.pdf"));
         }

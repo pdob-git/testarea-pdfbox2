@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,7 +36,7 @@ public class DetermineTextAndBackgroundColors {
     @Test
     public void testPdfToTextInfoConverter() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("test3DmitryK.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   ) {
+                PDDocument pdDocument = PDDocument.load(resource)   ) {
             PdfToTextInfoConverter pdfToTextInfoConverter = new PdfToTextInfoConverter(pdDocument);
             pdfToTextInfoConverter.stripPage(0, 300);
         }

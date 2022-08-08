@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSDictionary;
@@ -45,7 +44,7 @@ public class EditMarkedContent {
     @Test
     public void testMarkUnmarkedPathsAsArtifactsTradeSimple1() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("Trade_Simple1.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfContentStreamEditor markEditor = new PdfContentStreamEditor(document, page) {
                     int markedContentDepth = 0;

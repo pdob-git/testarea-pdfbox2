@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.multipdf.Splitter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -43,7 +42,7 @@ public class CopyPages
     {
         try (   InputStream resource = getClass().getResourceAsStream("AnnotationSample.Standard.pdf")  )
         {
-            PDDocument source = Loader.loadPDF(resource);
+            PDDocument source = PDDocument.load(resource);
             PDDocument output = new PDDocument();
             PDPage page = source.getPages().get(0);
             output.addPage(page);
@@ -69,7 +68,7 @@ public class CopyPages
     {
         try (   InputStream resource = getClass().getResourceAsStream("AnnotationSample.Standard.pdf")  )
         {
-            PDDocument source = Loader.loadPDF(resource);
+            PDDocument source = PDDocument.load(resource);
             PDDocument output = new PDDocument();
             PDPage page = source.getPages().get(0);
             output.importPage(page);
@@ -96,7 +95,7 @@ public class CopyPages
     {
         try (   InputStream resource = getClass().getResourceAsStream("AnnotationSample.Standard.pdf")  )
         {
-            PDDocument source = Loader.loadPDF(resource);
+            PDDocument source = PDDocument.load(resource);
 
             Splitter splitter = new Splitter();
             List<PDDocument> results = splitter.split(source);

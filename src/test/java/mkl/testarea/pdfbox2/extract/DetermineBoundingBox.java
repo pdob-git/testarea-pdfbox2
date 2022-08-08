@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -47,7 +46,7 @@ public class DetermineBoundingBox {
     @Test
     public void test00000000000005fw6q() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("00000000000005fw6q.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   ) {
+                PDDocument pdDocument = PDDocument.load(resource)   ) {
             drawBoundingBoxes(pdDocument);
             pdDocument.save(new File(RESULT_FOLDER, "00000000000005fw6q-boundingBoxes.pdf"));
         }
@@ -56,7 +55,7 @@ public class DetermineBoundingBox {
     @Test
     public void test10948() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("10948.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   ) {
+                PDDocument pdDocument = PDDocument.load(resource)   ) {
             drawBoundingBoxes(pdDocument);
             pdDocument.save(new File(RESULT_FOLDER, "10948-boundingBoxes.pdf"));
         }
@@ -65,7 +64,7 @@ public class DetermineBoundingBox {
     @Test
     public void testApache() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("apache.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   ) {
+                PDDocument pdDocument = PDDocument.load(resource)   ) {
             drawBoundingBoxes(pdDocument);
             pdDocument.save(new File(RESULT_FOLDER, "apache-boundingBoxes.pdf"));
         }
@@ -74,7 +73,7 @@ public class DetermineBoundingBox {
     @Test
     public void testEMPLOYMENTCONTRACTTEMPLATEcoveredAs() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("EMPLOYMENTCONTRACTTEMPLATE.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   ) {
+                PDDocument pdDocument = PDDocument.load(resource)   ) {
             drawBoundingBoxes(pdDocument);
             pdDocument.save(new File(RESULT_FOLDER, "EMPLOYMENTCONTRACTTEMPLATE-boundingBoxes.pdf"));
         }
@@ -83,7 +82,7 @@ public class DetermineBoundingBox {
     @Test
     public void testBal_532935_0314() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("Bal_532935_0314.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   ) {
+                PDDocument pdDocument = PDDocument.load(resource)   ) {
             drawBoundingBoxes(pdDocument);
             pdDocument.save(new File(RESULT_FOLDER, "Bal_532935_0314-boundingBoxes.pdf"));
         }
@@ -92,7 +91,7 @@ public class DetermineBoundingBox {
     @Test
     public void testTest() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/sign/test.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   ) {
+                PDDocument pdDocument = PDDocument.load(resource)   ) {
             drawBoundingBoxes(pdDocument);
             pdDocument.save(new File(RESULT_FOLDER, "test-boundingBoxes.pdf"));
         }
@@ -134,7 +133,7 @@ public class DetermineBoundingBox {
     @Test
     public void testMarkedContentTrade_Simple1() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/content/Trade_Simple1.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   ) {
+                PDDocument pdDocument = PDDocument.load(resource)   ) {
             drawMarkedContentBoundingBoxes(pdDocument);
             pdDocument.save(new File(RESULT_FOLDER, "Trade_Simple1-boundingBoxes.pdf"));
         }
@@ -157,7 +156,7 @@ public class DetermineBoundingBox {
     @Test
     public void testMarkedContentTestAlexanderDyuzhev() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("testAlexanderDyuzhev.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)   ) {
+                PDDocument pdDocument = PDDocument.load(resource)   ) {
             drawMarkedContentBoundingBoxes(pdDocument);
             pdDocument.save(new File(RESULT_FOLDER, "testAlexanderDyuzhev-boundingBoxes.pdf"));
         }

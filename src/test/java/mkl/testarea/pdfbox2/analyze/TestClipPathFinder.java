@@ -3,7 +3,6 @@ package mkl.testarea.pdfbox2.analyze;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.junit.Test;
@@ -35,7 +34,7 @@ public class TestClipPathFinder
         try (InputStream resource = getClass().getResourceAsStream("test-pdf4.pdf"))
         {
             System.out.println("test-pdf4.pdf");
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDPage page = document.getPage(0);
             ClipPathFinder finder = new ClipPathFinder(page);
             finder.findClipPaths();
@@ -71,7 +70,7 @@ public class TestClipPathFinder
         try (InputStream resource = getClass().getResourceAsStream("test-pdf5.pdf"))
         {
             System.out.println("test-pdf5.pdf");
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDPage page = document.getPage(0);
             ClipPathFinder finder = new ClipPathFinder(page);
             finder.findClipPaths();

@@ -3,7 +3,6 @@ package mkl.testarea.pdfbox2.meta;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.Test;
 
@@ -30,7 +29,7 @@ public class OpenFile
         try ( InputStream resource = getClass().getResourceAsStream("test.pdf") )
         {
             String password = "test";
-            PDDocument pdfdocument = Loader.loadPDF(resource, password);
+            PDDocument pdfdocument = PDDocument.load(resource, password);
             System.out.printf("Producer of User6722137's test.pdf: %s\n", pdfdocument.getDocumentInformation().getProducer());
         }
     }
@@ -56,7 +55,7 @@ public class OpenFile
     {
         try ( InputStream resource = getClass().getResourceAsStream("samplePDF.pdf") )
         {
-            PDDocument pdfdocument = Loader.loadPDF(resource);
+            PDDocument pdfdocument = PDDocument.load(resource);
             System.out.printf("Producer of plaidshirt's samplePDF.pdf: %s\n", pdfdocument.getDocumentInformation().getProducer());
         }
     }
@@ -78,7 +77,7 @@ public class OpenFile
     {
         try ( InputStream resource = getClass().getResourceAsStream("Geisler_COVID_statement_0A7A094E1EFB7.pdf") )
         {
-            PDDocument pdfdocument = Loader.loadPDF(resource);
+            PDDocument pdfdocument = PDDocument.load(resource);
             System.out.printf("Producer of Geisler_COVID_statement_0A7A094E1EFB7.pdf: %s\n", pdfdocument.getDocumentInformation().getProducer());
         }
     }
@@ -100,7 +99,7 @@ public class OpenFile
     {
         try ( InputStream resource = getClass().getResourceAsStream("Rehbein-Schule_Hanau_9_2018.pdf") )
         {
-            PDDocument pdfdocument = Loader.loadPDF(resource);
+            PDDocument pdfdocument = PDDocument.load(resource);
             System.out.printf("Producer of Rehbein-Schule_Hanau_9_2018.pdf: %s\n", pdfdocument.getDocumentInformation().getProducer());
         }
     }
@@ -122,7 +121,7 @@ public class OpenFile
     {
         try ( InputStream resource = getClass().getResourceAsStream("SALHN+Governing+Board+Minutes+-+5+March+2020.pdf") )
         {
-            PDDocument pdfdocument = Loader.loadPDF(resource);
+            PDDocument pdfdocument = PDDocument.load(resource);
             System.out.printf("Producer of SALHN+Governing+Board+Minutes+-+5+March+2020.pdf: %s\n", pdfdocument.getDocumentInformation().getProducer());
         }
     }

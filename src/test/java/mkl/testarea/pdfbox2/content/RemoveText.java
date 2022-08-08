@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.pdfwriter.ContentStreamWriter;
@@ -48,7 +47,7 @@ public class RemoveText {
     @Test
     public void testRemoveByText() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("watermark.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfContentStreamEditor editor = new PdfContentStreamEditor(document, page) {
                     final StringBuilder recentChars = new StringBuilder();

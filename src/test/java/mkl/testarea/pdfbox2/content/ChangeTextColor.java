@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSFloat;
@@ -53,7 +52,7 @@ public class ChangeTextColor {
     @Test
     public void testMakeTextBlackTestAfterRemovingAnnotation() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("test-after-removing-annotation.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 PdfContentStreamEditor editor = new PdfContentStreamEditor(document, page) {
                     @Override
@@ -137,7 +136,7 @@ public class ChangeTextColor {
     @Test
     public void testRemoveSomeAnnotationsAndMakeTextBlackThereTest2() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("Test2-SureshbabuKatta.pdf");
-                PDDocument document = Loader.loadPDF(resource)) {
+                PDDocument document = PDDocument.load(resource)) {
             for (PDPage page : document.getDocumentCatalog().getPages()) {
                 List<PDRectangle> areas = new ArrayList<>();
                 // Remove every other annotation, collect their areas

@@ -11,7 +11,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.util.Matrix;
 import org.junit.BeforeClass;
@@ -91,7 +90,7 @@ public class JoinPages {
         contentStream.addRect(0, 0, 72, 72);
         contentStream.fill();
         contentStream.setNonStrokingColor(Color.BLACK);
-        PDFont font = new PDType1Font(FontName.HELVETICA);
+        PDFont font = PDType1Font.HELVETICA;
         contentStream.beginText();
         contentStream.setFont(font, 18);
         contentStream.newLineAtOffset(2, 54);
@@ -115,7 +114,7 @@ public class JoinPages {
         contentStream.addRect(0, 0, PDRectangle.A5.getWidth(), PDRectangle.A5.getHeight());
         contentStream.fill();
         contentStream.setNonStrokingColor(Color.BLACK);
-        PDFont font = new PDType1Font(FontName.HELVETICA);
+        PDFont font = PDType1Font.HELVETICA;
         contentStream.beginText();
         contentStream.setFont(font, 18);
         contentStream.newLineAtOffset(2, PDRectangle.A5.getHeight() - 24);

@@ -3,7 +3,6 @@ package mkl.testarea.pdfbox2.meta;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.cos.COSName;
@@ -35,7 +34,7 @@ public class DetermineMaxObjectId {
     @Test
     public void testGetMaxObjIdSample01() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("sample01.pdf");
-                PDDocument document = Loader.loadPDF(resource)  ) {
+                PDDocument document = PDDocument.load(resource)  ) {
             long maxObjectId = getMaxObjId(document);
             switch ((int)maxObjectId) {
             case 412:

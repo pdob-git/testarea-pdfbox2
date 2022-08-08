@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -17,7 +16,6 @@ import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceDictionary;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceStream;
@@ -55,11 +53,11 @@ public class TestEmptySignatureField
         try (   InputStream sourceStream = getClass().getResourceAsStream("test.pdf");
                 OutputStream output = new FileOutputStream(new File(RESULT_FOLDER, "test-with-empty-sig-field.pdf")))
         {
-            PDFont font = new PDType1Font(FontName.HELVETICA);
+            PDFont font = PDType1Font.HELVETICA;
             PDResources resources = new PDResources();
             resources.put(COSName.getPDFName("Helv"), font);
 
-            PDDocument document = Loader.loadPDF(sourceStream);
+            PDDocument document = PDDocument.load(sourceStream);
             PDAcroForm acroForm = new PDAcroForm(document);
             acroForm.setDefaultResources(resources);
             document.getDocumentCatalog().setAcroForm(acroForm);

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.documentinterchange.logicalstructure.PDStructureElement;
 import org.apache.pdfbox.pdmodel.documentinterchange.logicalstructure.PDStructureNode;
@@ -40,7 +39,7 @@ public class MoveInStructureTree {
     @Test
     public void testMoveTableUpTradeSimple1() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/content/Trade_Simple1.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)    ) {
+                PDDocument pdDocument = PDDocument.load(resource)    ) {
             PDStructureTreeRoot root = pdDocument.getDocumentCatalog().getStructureTreeRoot();
             List<Object> kids = root.getKids();
             for (Object kid: kids) {

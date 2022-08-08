@@ -3,7 +3,6 @@ package mkl.testarea.pdfbox2.form;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
@@ -33,7 +32,7 @@ public class ListFormFields
     @Test
     public void testListFieldsInFieldNameTest() throws InvalidPasswordException, IOException
     {
-        PDDocument doc = Loader.loadPDF(getClass().getResourceAsStream("field name test.pdf"));
+        PDDocument doc = PDDocument.load(getClass().getResourceAsStream("field name test.pdf"));
         PDAcroForm form = doc.getDocumentCatalog().getAcroForm();
         List<PDField> fields = form.getFields();
         for (int i=0; i<fields.size(); i++) {

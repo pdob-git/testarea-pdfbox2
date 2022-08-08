@@ -11,7 +11,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -47,7 +46,7 @@ public class BreakLongString
             doc.addPage(page);
             PDPageContentStream contentStream = new PDPageContentStream(doc, page);
 
-            PDFont pdfFont = new PDType1Font(FontName.HELVETICA);
+            PDFont pdfFont = PDType1Font.HELVETICA;
             float fontSize = 25;
             float leading = 1.5f * fontSize;
 
@@ -131,7 +130,7 @@ public class BreakLongString
             doc.addPage(page);
             PDPageContentStream contentStream = new PDPageContentStream(doc, page);
 
-            PDFont pdfFont = new PDType1Font(FontName.HELVETICA);
+            PDFont pdfFont = PDType1Font.HELVETICA;
             float fontSize = 25;
             float leading = 1.5f * fontSize;
 
@@ -228,7 +227,7 @@ public class BreakLongString
             doc.addPage(page);
             PDPageContentStream contentStream = new PDPageContentStream(doc, page);
 
-            PDFont pdfFont = new PDType1Font(FontName.HELVETICA);
+            PDFont pdfFont = PDType1Font.HELVETICA;
             float fontSize = 25;
             float leading = 1.5f * fontSize;
 

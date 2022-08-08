@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Collections;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
 import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceCMYK;
@@ -42,7 +41,7 @@ public class ExtractFilteredText {
     public void testExtractNoWhiteTextES1315248() throws IOException {
         float[] colorToFilter = new float[] {0,0,0,0};
         try (   InputStream resource = getClass().getResourceAsStream("ES1315248.pdf");
-                PDDocument document = Loader.loadPDF(resource)  ) {
+                PDDocument document = PDDocument.load(resource)  ) {
             PDFFilteringTextStripper stripper = new PDFFilteringTextStripper((text, gs) -> {
                 PDColor color = gs.getNonStrokingColor();
                 return color == null || !((color.getColorSpace() instanceof PDDeviceCMYK) && Arrays.equals(color.getComponents(), colorToFilter));
@@ -71,7 +70,7 @@ public class ExtractFilteredText {
     public void testExtractNoGrayTextES1214377() throws IOException {
         float[] colorToFilter = new float[] {0.753f};
         try (   InputStream resource = getClass().getResourceAsStream("ES1214377.pdf");
-                PDDocument document = Loader.loadPDF(resource)  ) {
+                PDDocument document = PDDocument.load(resource)  ) {
             PDFFilteringTextStripper stripper = new PDFFilteringTextStripper((text, gs) -> {
                 PDColor color = gs.getNonStrokingColor();
                 return color == null || !((color.getColorSpace() instanceof PDICCBased) && Arrays.equals(color.getComponents(), colorToFilter));

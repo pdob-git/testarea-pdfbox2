@@ -17,7 +17,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -100,7 +99,7 @@ public class AddTextWithDynamicFonts {
         try (PDDocument doc = new PDDocument();
              PDPageContentStream contentStream = new PDPageContentStream(doc, page)) {
             doc.addPage(page);
-            contentStream.setFont(new PDType1Font(FontName.HELVETICA), 12);
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
 
             // Or load a specific font from a file
             // contentStream.setFont(PDType0Font.load(this.doc, new File("/fontPath.ttf")), 12);

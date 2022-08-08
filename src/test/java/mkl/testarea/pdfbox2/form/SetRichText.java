@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDTextField;
@@ -46,7 +45,7 @@ public class SetRichText {
     @Test
     public void testFormBee() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("formBee.pdf")) {
-            PDDocument pdfDocument = Loader.loadPDF(resource);
+            PDDocument pdfDocument = PDDocument.load(resource);
 
             pdfDocument.getDocument().setIsXRefStream(true);
             PDAcroForm acroForm = pdfDocument.getDocumentCatalog().getAcroForm();

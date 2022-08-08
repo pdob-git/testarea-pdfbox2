@@ -3,7 +3,6 @@ package mkl.testarea.pdfbox2.form;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -34,7 +33,7 @@ public class DetermineWidgetPage
         System.out.println("aFieldTwice.pdf\n=================");
         try (   InputStream resource = getClass().getResourceAsStream("aFieldTwice.pdf")    )
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
             if (acroForm != null)
             {
@@ -68,7 +67,7 @@ public class DetermineWidgetPage
         System.out.println("test_duplicate_field2.pdf\n=================");
         try (   InputStream resource = getClass().getResourceAsStream("test_duplicate_field2.pdf")    )
         {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
             if (acroForm != null)
             {

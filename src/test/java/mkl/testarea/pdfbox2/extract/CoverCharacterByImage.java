@@ -8,7 +8,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -52,7 +51,7 @@ public class CoverCharacterByImage {
     @Test
     public void testCoverLikeLez() throws IOException {
         try (InputStream resource = getClass().getResourceAsStream("EMPLOYMENTCONTRACTTEMPLATE.pdf")) {
-            PDDocument pdocument = Loader.loadPDF(resource);
+            PDDocument pdocument = PDDocument.load(resource);
 
             String imagePath = "src/test/resources/mkl/testarea/pdfbox2/content/Willi-1.jpg";
             PDImageXObject pdImage = PDImageXObject.createFromFile(imagePath, pdocument);

@@ -8,13 +8,11 @@ import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Locale;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,7 +43,7 @@ public class ExtractCheckBoxes {
     @Test
     public void testExtractFromUpdatedForm() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("Updated_Form.pdf");
-                PDDocument document = Loader.loadPDF(resource)  ) {
+                PDDocument document = PDDocument.load(resource)  ) {
             for (PDPage page : document.getPages())
             {
                 PdfCheckBoxFinder finder = new PdfCheckBoxFinder(page);
@@ -76,8 +74,8 @@ public class ExtractCheckBoxes {
     @Test
     public void testExtractInlinedInTextFromUpdatedForm() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("Updated_Form.pdf");
-                PDDocument document = Loader.loadPDF(resource)  ) {
-            PDType1Font font = new PDType1Font(FontName.ZAPF_DINGBATS);
+                PDDocument document = PDDocument.load(resource)  ) {
+            PDType1Font font = PDType1Font.ZAPF_DINGBATS;
             for (PDPage page : document.getPages())
             {
                 PdfCheckBoxFinder finder = new PdfCheckBoxFinder(page);

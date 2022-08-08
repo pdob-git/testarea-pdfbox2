@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -156,12 +155,12 @@ public class MergeDocuments
         MemoryUsageSetting setupMainMemoryOnly = MemoryUsageSetting.setupMainMemoryOnly();
         if (anterior != null)
         {
-            dest = Loader.loadPDF(anterior, setupMainMemoryOnly);
-            src = Loader.loadPDF(novo, setupMainMemoryOnly);
+            dest = PDDocument.load(anterior, setupMainMemoryOnly);
+            src = PDDocument.load(novo, setupMainMemoryOnly);
         }
         else
         {
-            dest = Loader.loadPDF(novo, setupMainMemoryOnly);
+            dest = PDDocument.load(novo, setupMainMemoryOnly);
             src = new PDDocument();
         }
         int totalPages = dest.getNumberOfPages();

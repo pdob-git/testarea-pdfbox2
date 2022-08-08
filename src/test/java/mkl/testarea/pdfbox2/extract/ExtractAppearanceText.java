@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
@@ -50,7 +49,7 @@ public class ExtractAppearanceText {
         {
             System.out.println();
             System.out.println("btn.pdf");
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             showNormalFieldAppearanceTexts(document);
         }
     }
@@ -72,7 +71,7 @@ public class ExtractAppearanceText {
         {
             System.out.println();
             System.out.println("KYF 211 Beställning 2014.pdf");
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
             showNormalFieldAppearanceTexts(document);
         }
     }

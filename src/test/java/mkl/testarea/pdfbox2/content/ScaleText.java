@@ -9,7 +9,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.util.Matrix;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,7 +35,7 @@ public class ScaleText {
     @Test
     public void testScaleLikeLinusHoja() throws IOException {
         try (   PDDocument pdDocument = new PDDocument()    ) {
-            PDFont font = new PDType1Font(FontName.HELVETICA);
+            PDFont font = PDType1Font.HELVETICA;
 
             PDPage page = new PDPage(new PDRectangle(300, 200));
             pdDocument.addPage(page);

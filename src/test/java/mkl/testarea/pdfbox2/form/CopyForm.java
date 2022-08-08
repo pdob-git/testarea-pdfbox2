@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -58,7 +57,7 @@ public class CopyForm
     {
         try (   InputStream originalStream = getClass().getResourceAsStream("FillFormField.pdf") )
         {
-            PDDocument sourceDocument = Loader.loadPDF(originalStream);
+            PDDocument sourceDocument = PDDocument.load(originalStream);
             PDDocument targetDocument = new PDDocument();
             targetDocument.getDocumentCatalog().setAcroForm(new PDAcroForm(targetDocument));
             addPage(sourceDocument, targetDocument, 0);
@@ -146,7 +145,7 @@ public class CopyForm
     {
         try (   InputStream originalStream = getClass().getResourceAsStream("formBee3.pdf") )
         {
-            PDDocument documentSrc = Loader.loadPDF(originalStream);;
+            PDDocument documentSrc = PDDocument.load(originalStream);;
             PDAcroForm acroFormSrc = documentSrc.getDocumentCatalog().getAcroForm();
 
             PDDocument documentDest = new PDDocument();
@@ -204,7 +203,7 @@ public class CopyForm
     {
         try (   InputStream originalStream = getClass().getResourceAsStream("formBee3.pdf") )
         {
-            PDDocument documentSrc = Loader.loadPDF(originalStream);;
+            PDDocument documentSrc = PDDocument.load(originalStream);;
             PDAcroForm acroFormSrc = documentSrc.getDocumentCatalog().getAcroForm();
 
             PDDocument documentDest = new PDDocument();

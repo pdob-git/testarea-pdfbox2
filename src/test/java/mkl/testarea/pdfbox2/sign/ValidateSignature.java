@@ -11,7 +11,6 @@ import java.security.Security;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
@@ -72,7 +71,7 @@ public class ValidateSignature
         try
         {
             pdfByte = IOUtils.toByteArray(this.getClass().getResourceAsStream("SignatureVlidationTest.pdf"));
-            pdfDoc = Loader.loadPDF(new ByteArrayInputStream(pdfByte));
+            pdfDoc = PDDocument.load(new ByteArrayInputStream(pdfByte));
             PDSignature signature = pdfDoc.getSignatureDictionaries().get(0);
 
             byte[] signatureAsBytes = signature.getContents(pdfByte);
@@ -121,7 +120,7 @@ public class ValidateSignature
         try
         {
             pdfByte = IOUtils.toByteArray(this.getClass().getResourceAsStream("SignatureVlidationTest.pdf"));
-            pdfDoc = Loader.loadPDF(new ByteArrayInputStream(pdfByte));
+            pdfDoc = PDDocument.load(new ByteArrayInputStream(pdfByte));
             PDSignature signature = pdfDoc.getSignatureDictionaries().get(0);
 
             byte[] signatureAsBytes = signature.getContents(pdfByte);
@@ -199,7 +198,7 @@ public class ValidateSignature
     boolean validateSignaturesImproved(byte[] pdfByte, String signatureFileName) throws IOException, CMSException, OperatorCreationException, GeneralSecurityException
     {
         boolean result = true;
-        try (PDDocument pdfDoc = Loader.loadPDF(pdfByte))
+        try (PDDocument pdfDoc = PDDocument.load(pdfByte))
         {
             List<PDSignature> signatures = pdfDoc.getSignatureDictionaries();
             int index = 0;

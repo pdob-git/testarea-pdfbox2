@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.junit.BeforeClass;
@@ -33,7 +32,7 @@ public class ScalePages {
     @Test
     public void testUserUnitScaleAFieldTwice() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/form/aFieldTwice.pdf")) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
 
             for (PDPage page : document.getPages()) {
                 page.getCOSObject().setFloat("UserUnit", 1.7f);

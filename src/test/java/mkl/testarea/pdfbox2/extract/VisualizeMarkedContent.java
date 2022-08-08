@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.fontbox.util.BoundingBox;
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSArray;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSDictionary;
@@ -36,7 +35,6 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.PDType3CharProc;
 import org.apache.pdfbox.pdmodel.font.PDType3Font;
 import org.apache.pdfbox.pdmodel.font.PDVectorFont;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.text.PDFMarkedContentExtractor;
 import org.apache.pdfbox.text.TextPosition;
 import org.apache.pdfbox.util.Matrix;
@@ -99,7 +97,7 @@ public class VisualizeMarkedContent {
     public void visualize(String resourceName, String resultName) throws IOException {
         System.out.printf("\n\n===\n%s\n===\n", resourceName);
         try (   InputStream resource = getClass().getResourceAsStream(resourceName)) {
-            PDDocument document = Loader.loadPDF(resource);
+            PDDocument document = PDDocument.load(resource);
 
             Map<PDPage, Map<Integer, PDMarkedContent>> markedContents = new HashMap<>();
 
@@ -187,7 +185,7 @@ public class VisualizeMarkedContent {
                 if (canvas == null) {
                     canvas = new PDPageContentStream(document, page, AppendMode.APPEND, false, true);
                     visualizations.put(page, canvas);
-                    canvas.setFont(new PDType1Font(FontName.HELVETICA), 11);
+                    canvas.setFont(PDType1Font.HELVETICA, 11);
                 }
                 canvas.saveGraphicsState();
                 canvas.setStrokingColor(color);

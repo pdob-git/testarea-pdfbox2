@@ -16,7 +16,6 @@ import java.util.List;
 import javax.crypto.Cipher;
 import javax.xml.bind.DatatypeConverter;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
@@ -74,7 +73,7 @@ public class CalculateDigest {
     /** @see #testVerifyPdfLikeUser2893427() */
     public static void verifyPDF(String fileName) throws Exception {
         File fileDoc = new File(fileName);
-        PDDocument document = Loader.loadPDF(fileDoc);
+        PDDocument document = PDDocument.load(fileDoc);
         List<PDSignature> signatures = document.getSignatureDictionaries();
         PDSignature sig = signatures.get(0);
         if (sig != null) {
@@ -226,7 +225,7 @@ public class CalculateDigest {
     public void testExtractMessageDigestAttributeForUser2893427() throws IOException, CMSException {
         try (   InputStream resource = getClass().getResourceAsStream("TEST-signed-pades-baseline-b.pdf")   ) {
             byte[] bytes = IOUtils.toByteArray(resource);
-            PDDocument document = Loader.loadPDF(bytes);
+            PDDocument document = PDDocument.load(bytes);
             List<PDSignature> signatures = document.getSignatureDictionaries();
             PDSignature sig = signatures.get(0);
             byte[] cmsBytes = sig.getContents(bytes);

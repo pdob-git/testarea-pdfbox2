@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -51,7 +50,7 @@ public class ReadForm
     {
         try (   InputStream originalStream = getClass().getResourceAsStream("KYF 211 Best\u00e4llning 2014.pdf") )
         {
-            PDDocument pdfDocument = Loader.loadPDF(originalStream);
+            PDDocument pdfDocument = PDDocument.load(originalStream);
             PDAcroForm acroForm = pdfDocument.getDocumentCatalog().getAcroForm();
             
             PDField field = acroForm.getField("Krematorier");

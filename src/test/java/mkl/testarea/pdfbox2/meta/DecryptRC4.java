@@ -3,7 +3,6 @@ package mkl.testarea.pdfbox2.meta;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.junit.Assert;
@@ -29,7 +28,7 @@ public class DecryptRC4 {
     @Test
     public void test2AF_0088_NA_LMF35_40_01_2019_01_18_14_25_52_1_() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("2AF-0088-NA-LMF35-40-01-2019-01-18-14-25-52(1).pdf") ) {
-            PDDocument pdDocument = Loader.loadPDF(resource);
+            PDDocument pdDocument = PDDocument.load(resource);
             PDAcroForm pdAcroForm = pdDocument.getDocumentCatalog().getAcroForm();
             String value = pdAcroForm.getField("totalBuyoffCount").getValueAsString();
             Assert.assertEquals("The value of the field totalBuyoffCount is incorrect,", "3", value);

@@ -5,7 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.pdfbox.contentstream.PDFGraphicsStreamEngine;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -21,6 +22,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * @author mkl
@@ -48,9 +50,9 @@ public class CheckImageFieldFilled {
      * @see #isFieldFilledXfa(Document, String)
      */
     @Test
-    public void testCheckXfaGsa500Pdf_v4() throws IOException {
+    public void testCheckXfaGsa500Pdf_v4() throws IOException, ParserConfigurationException, SAXException {
         try (   InputStream resource = getClass().getResourceAsStream("GSA 500 PDF_v4.pdf");
-                PDDocument document = Loader.loadPDF(resource);    ) {
+                PDDocument document = PDDocument.load(resource);    ) {
             PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
             Document xfaDom = acroForm.getXFA().getDocument();
 
@@ -95,7 +97,7 @@ public class CheckImageFieldFilled {
     @Test
     public void testCheckAcroFormGsa500Pdf_v4() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("GSA 500 PDF_v4.pdf");
-                PDDocument document = Loader.loadPDF(resource);    ) {
+                PDDocument document = PDDocument.load(resource);    ) {
             PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
 
             System.out.println("Filled image fields (AcroForm) from ImageField1..ImageField105:");

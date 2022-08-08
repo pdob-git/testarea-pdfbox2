@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.BeforeClass;
@@ -38,9 +37,9 @@ public class FlattenAndMerge {
     public void testMergeGovernmentForms() throws IOException {
         try (   InputStream resource1 = getClass().getResourceAsStream("GeneralForbearance.pdf");
                 InputStream resource2 = getClass().getResourceAsStream("GeneralForbearance.pdf")) {
-            PDDocument destination = Loader.loadPDF(resource1);
+            PDDocument destination = PDDocument.load(resource1);
 
-            PDDocument source = Loader.loadPDF(resource2);
+            PDDocument source = PDDocument.load(resource2);
             source.getDocumentCatalog().getAcroForm().flatten(); //comment out just this line and the destination.save will pass
 
             PDFMergerUtility appender = new PDFMergerUtility();
@@ -72,8 +71,8 @@ public class FlattenAndMerge {
         try (   InputStream resource1 = getClass().getResourceAsStream("GovFormPreFlattened.pdf");
                 InputStream resource2 = getClass().getResourceAsStream("GovFormPreFlattened.pdf")) {
             PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
-            PDDocument src = Loader.loadPDF(resource1);
-            PDDocument dest = Loader.loadPDF(resource2);
+            PDDocument src = PDDocument.load(resource1);
+            PDDocument dest = PDDocument.load(resource2);
             pdfMergerUtility.appendDocument(dest, src);
             src.close(); //if we don't close the src then we don't have an error
             dest.save(new File(RESULT_FOLDER, "PreFlattenedMergeIssue.pdf"));

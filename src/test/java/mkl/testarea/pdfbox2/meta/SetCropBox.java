@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
@@ -44,7 +43,7 @@ public class SetCropBox
     {
         try (   InputStream resource = getClass().getResourceAsStream("ENG-US_NMATSCJ-1.103-0330.pdf"))
         {
-            PDDocument pdDocument = Loader.loadPDF(resource);
+            PDDocument pdDocument = PDDocument.load(resource);
             PDPage page = pdDocument.getPage(12-1);
             page.setCropBox(new PDRectangle(40f, 680f, 510f, 100f));
             pdDocument.save(new File(RESULT_FOLDER, "ENG-US_NMATSCJ-1.103-0330-page12cropped.pdf"));
@@ -68,7 +67,7 @@ public class SetCropBox
     {
         try (   InputStream resource = getClass().getResourceAsStream("ENG-US_NMATSCJ-1.103-0330.pdf"))
         {
-            PDDocument pdDocument = Loader.loadPDF(resource);
+            PDDocument pdDocument = PDDocument.load(resource);
             PDPage page = pdDocument.getPage(12-1);
             page.setCropBox(new PDRectangle(40f, 680f, 510f, 100f));
 

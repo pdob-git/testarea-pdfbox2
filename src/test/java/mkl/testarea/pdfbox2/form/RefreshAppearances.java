@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -49,7 +48,7 @@ public class RefreshAppearances {
     @Test
     public void testRefreshLikeLuckydonald() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("sample5.pdf");
-                PDDocument pdDocument = Loader.loadPDF(resource)) {
+                PDDocument pdDocument = PDDocument.load(resource)) {
             refresh(pdDocument, pdDocument.getDocumentCatalog().getAcroForm());
 
             pdDocument.save(new File(RESULT_FOLDER, "sample5-RefreshLikeLuckydonald.pdf"));

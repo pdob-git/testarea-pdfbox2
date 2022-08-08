@@ -15,7 +15,6 @@ import java.security.Security;
 import java.security.cert.Certificate;
 import java.util.Calendar;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.examples.signature.TSAClient;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -71,7 +70,7 @@ public class SignPadesBc {
     public void testSignPadesBaselineT() throws IOException, GeneralSecurityException, OperatorException {
         try (   InputStream resource = getClass().getResourceAsStream("test.pdf");
                 OutputStream result = new FileOutputStream(new File(RESULT_FOLDER, "PadesBc.pdf"));
-                PDDocument pdDocument = Loader.loadPDF(resource)   )
+                PDDocument pdDocument = PDDocument.load(resource)   )
         {
             SignatureInterface signatureInterface = new PadesSignatureContainerBc(new X509CertificateHolder(chain[0].getEncoded()),
                     new JcaContentSignerBuilder("SHA512withRSA").build(pk),

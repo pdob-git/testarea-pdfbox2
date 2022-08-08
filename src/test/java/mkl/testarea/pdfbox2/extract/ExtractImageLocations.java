@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.contentstream.operator.color.SetNonStrokingColor;
 import org.apache.pdfbox.contentstream.operator.color.SetNonStrokingColorN;
@@ -56,7 +55,7 @@ public class ExtractImageLocations {
     public void testExtractLikeHelloWorldFromTopSecret() throws IOException {
         System.out.println( "Processing TopSecret.pdf using PrintImageLocations");
         try (   InputStream resource = getClass().getResourceAsStream("TopSecret.pdf");
-                PDDocument document = Loader.loadPDF(resource)    )
+                PDDocument document = PDDocument.load(resource)    )
         {
             PrintImageLocations printer = new PrintImageLocations();
             int pageNum = 0;
@@ -96,7 +95,7 @@ public class ExtractImageLocations {
     public void testExtractLikeHelloWorldImprovedFromTopSecret() throws IOException {
         System.out.println( "Processing TopSecret.pdf using PrintImageLocationsImproved");
         try (   InputStream resource = getClass().getResourceAsStream("TopSecret.pdf");
-                PDDocument document = Loader.loadPDF(resource)    )
+                PDDocument document = PDDocument.load(resource)    )
         {
             PrintImageLocations printer = new PrintImageLocationsImproved();
             int pageNum = 0;

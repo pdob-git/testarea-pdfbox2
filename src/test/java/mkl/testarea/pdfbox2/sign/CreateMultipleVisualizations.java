@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.io.IOUtils;
@@ -29,7 +28,6 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
@@ -100,7 +98,7 @@ public class CreateMultipleVisualizations implements SignatureInterface {
     public void testCreateSignatureWithMultipleVisualizations() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/analyze/test-rivu.pdf");
                 OutputStream result = new FileOutputStream(new File(RESULT_FOLDER, "testSignedMultipleVisualizations.pdf"));
-                PDDocument pdDocument = Loader.loadPDF(resource)   )
+                PDDocument pdDocument = PDDocument.load(resource)   )
         {
             PDAcroForm acroForm = pdDocument.getDocumentCatalog().getAcroForm();
             if (acroForm == null) {
@@ -147,7 +145,7 @@ public class CreateMultipleVisualizations implements SignatureInterface {
     public void testCreateSignatureWithMultipleVisualizationsC10000000713071804294534() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("C10000000713071804294534.pdf");
                 OutputStream result = new FileOutputStream(new File(RESULT_FOLDER, "C10000000713071804294534-SignedMultipleVisualizations.pdf"));
-                PDDocument pdDocument = Loader.loadPDF(resource)   )
+                PDDocument pdDocument = PDDocument.load(resource)   )
         {
             PDAcroForm acroForm = pdDocument.getDocumentCatalog().getAcroForm();
             if (acroForm == null) {
@@ -201,7 +199,7 @@ public class CreateMultipleVisualizations implements SignatureInterface {
         float height = bbox.getHeight();
 
         form.setBBox(bbox);
-        PDFont font = new PDType1Font(FontName.HELVETICA_BOLD);
+        PDFont font = PDType1Font.HELVETICA_BOLD;
 
         // from PDVisualSigBuilder.createAppearanceDictionary()
         PDAppearanceDictionary appearance = new PDAppearanceDictionary();
@@ -256,7 +254,7 @@ public class CreateMultipleVisualizations implements SignatureInterface {
     public void testCreateSignatureWithMultipleImageOnlyVisualizations() throws IOException {
         try (   InputStream resource = getClass().getResourceAsStream("/mkl/testarea/pdfbox2/analyze/test-rivu.pdf");
                 OutputStream result = new FileOutputStream(new File(RESULT_FOLDER, "testSignedMultipleImageOnlyVisualizations.pdf"));
-                PDDocument pdDocument = Loader.loadPDF(resource)   )
+                PDDocument pdDocument = PDDocument.load(resource)   )
         {
             PDAcroForm acroForm = pdDocument.getDocumentCatalog().getAcroForm();
             if (acroForm == null) {
