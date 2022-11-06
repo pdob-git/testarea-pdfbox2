@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.pdfbox.multipdf.Overlay;
@@ -156,6 +157,36 @@ public class OverlayDocuments {
                 finalOverlayDoc.addPage(pg);
             }
             finalOverlayDoc.save(new File(RESULT_FOLDER, "example_broken-preparedForOverlay-Fixed.pdf"));
+        }
+    }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/74319965/pdfbox-2-0-27-watermarking-with-map-for-page-specific-overlay-files-results-in">
+     * PDFBox 2.0.27: Watermarking with map for page specific overlay files results in no watermark
+     * </a>
+     * <br>
+     * <a href="https://github.com/SeeAZO/stackoverflow_questions/tree/main/PDFBox_2.0.27_Watermark/res">
+     * Original_PDF.pdf, A1_Horizontal_Watermark.pdf
+     * </a>
+     * <p>
+     * The OP essentially re-discovered the regression <a href="https://issues.apache.org/jira/browse/PDFBOX-5523">PDFBOX-5523</a>. 
+     * </p>
+     */
+    @Test
+    public void testOverlayLikeSeeAZO() throws IOException {
+        HashMap<Integer, String> overlayGuide = new HashMap<>();
+        overlayGuide.put(1, "src\\test\\resources\\mkl\\testarea\\pdfbox2\\merge\\A1_Horizontal_Watermark.pdf");
+
+        try (
+            PDDocument originalPDF = PDDocument.load(getClass().getResourceAsStream("Original_PDF.pdf"));
+            Overlay overlay = new Overlay();
+        ) {
+            overlay.setInputPDF(originalPDF);
+            overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
+            PDDocument overlayedPDF = overlay.overlay(overlayGuide);
+
+            overlayedPDF.save(new File(RESULT_FOLDER, "Original_PDF-with-A1_Horizontal_Watermark.pdf"));
+            overlayedPDF.close();
         }
     }
 }
