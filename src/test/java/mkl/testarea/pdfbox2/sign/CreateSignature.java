@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.Security;
 import java.security.cert.Certificate;
@@ -40,6 +41,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.ExternalSigningSupport;
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureInterface;
+import org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureOptions;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.apache.pdfbox.pdmodel.interactive.form.PDNonTerminalField;
@@ -68,6 +70,7 @@ import org.bouncycastle.operator.DefaultSignatureAlgorithmIdentifierFinder;
 import org.bouncycastle.operator.bc.BcDigestCalculatorProvider;
 import org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
 import org.bouncycastle.util.Store;
+import org.bouncycastle.util.encoders.Hex;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -763,5 +766,47 @@ public class CreateSignature
             page.setNeedToBeUpdated(true);
             sign(pdDocument, result, data -> signWithSeparatedHashing(data));
         }
+    }
+
+    /**
+     * <a href="https://stackoverflow.com/questions/75230246/adding-new-signature-by-reatining-existing-unsigned-signature-fields-using-pdfbo">
+     * Adding new signature by reatining existing unsigned signature fields using PDFBox
+     * </a>
+     * <br/>
+     * <a href="https://drive.google.com/file/d/1-vu9_WIfFo198v6AxoBMxCuyX1rE2FOS/view?usp=share_link">
+     * Formulier DSS-01 - DC+QV Onboarding Checklist.pdf
+     * </a>
+     * <p>
+     * As this test shows, the pre-signing code of the OP does not cause
+     * the zeroed out sections in their result file. It is unclear, though,
+     * whether the "Embedding signature code" of the OP does the zeroing
+     * as the method <code>makeLtv</code> called therein is not shared.
+     * </p>
+     */
+    @Test
+    public void testPresignLikeRajathRJoshi() throws IOException, NoSuchAlgorithmException {
+        try (
+            InputStream resource = getClass().getResourceAsStream("Formulier DSS-01 - DC+QV Onboarding Checklist.pdf");
+            PDDocument doc = PDDocument.load(resource);
+            FileOutputStream fos = new FileOutputStream(new File(RESULT_FOLDER, "Formulier DSS-01 - DC+QV Onboarding Checklist-presigned.pdf"));
+            SignatureOptions signatureOptions = new SignatureOptions();
+        ) {
+           signatureOptions.setPreferredSignatureSize(SignatureOptions.DEFAULT_SIGNATURE_SIZE * 2);
+           signatureOptions.setPage(0);
+
+           PDSignature signature = new PDSignature();
+           signature.setFilter(PDSignature.FILTER_ADOBE_PPKLITE);
+           signature.setSubFilter(PDSignature.SUBFILTER_ADBE_PKCS7_DETACHED);
+           signature.setSignDate(Calendar.getInstance());
+           doc.addSignature(signature, signatureOptions);
+           ExternalSigningSupport externalSigning = doc.saveIncrementalForExternalSigning(fos);
+
+           MessageDigest digest = MessageDigest.getInstance("SHA-256");
+           byte[] hashBytes = digest.digest(IOUtils.toByteArray(externalSigning.getContent()));
+           System.out.println(Hex.toHexString(hashBytes));
+           externalSigning.setSignature(new byte[0]);
+           int offset = signature.getByteRange()[1] + 1;
+           IOUtils.closeQuietly(signatureOptions);
+       }
     }
 }
