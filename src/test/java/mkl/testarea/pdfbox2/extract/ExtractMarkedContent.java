@@ -106,6 +106,42 @@ public class ExtractMarkedContent {
     }
 
     /**
+     * <a href="https://issues.apache.org/jira/browse/PDFBOX-5613">
+     * PDFBOX-5613 - uncorrent paragraph split
+     * </a>
+     * <br/>
+     * <a href="https://issues.apache.org/jira/secure/attachment/13058595/Daily%20Report.pdf">
+     * Daily Report.pdf
+     * </a>
+     * <p>
+     * Making use of the marked content, the contents of the file can better be extracted.
+     * </p>
+     */
+    @Test
+    public void testExtractDailyReport() throws IOException {
+        System.out.printf("\n\n===\n%s\n===\n", "Daily Report.pdf");
+        try (   InputStream resource = getClass().getResourceAsStream("Daily Report.pdf")) {
+            PDDocument document = PDDocument.load(resource);
+
+            Map<PDPage, Map<Integer, PDMarkedContent>> markedContents = new HashMap<>();
+
+            for (PDPage page : document.getPages()) {
+                PDFMarkedContentExtractor extractor = new PDFMarkedContentExtractor();
+                extractor.processPage(page);
+
+                Map<Integer, PDMarkedContent> theseMarkedContents = new HashMap<>();
+                markedContents.put(page, theseMarkedContents);
+                for (PDMarkedContent markedContent : extractor.getMarkedContents()) {
+                    theseMarkedContents.put(markedContent.getMCID(), markedContent);
+                }
+            }
+
+            PDStructureNode root = document.getDocumentCatalog().getStructureTreeRoot();
+            showStructure(root, markedContents);
+        }
+    }
+
+    /**
      * @see #testExtractTestWPhromma()
      */
     void showStructure(PDStructureNode node, Map<PDPage, Map<Integer, PDMarkedContent>> markedContents) {
