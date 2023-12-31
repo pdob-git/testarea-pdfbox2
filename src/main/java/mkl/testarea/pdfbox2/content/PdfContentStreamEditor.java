@@ -109,7 +109,7 @@ public class PdfContentStreamEditor extends PDFGraphicsStreamEngine {
     @Override
     public void shadingFill(COSName shadingName) throws IOException { }
 
-    // PDFStreamEngine overrides to allow editing
+    // Actual editing methods
     @Override
     public void processPage(PDPage page) throws IOException {
         PDStream stream = new PDStream(document);
@@ -121,6 +121,20 @@ public class PdfContentStreamEditor extends PDFGraphicsStreamEngine {
         replacementStream = null;
     }
 
+    public void processFormXObject(PDFormXObject formXObject, PDPage page) throws IOException {
+        PDStream stream = new PDStream(document);
+        replacement = new ContentStreamWriter(replacementStream = stream.createOutputStream(COSName.FLATE_DECODE));
+        super.processChildStream(formXObject, page);
+        replacementStream.close();
+        try (OutputStream outputStream = formXObject.getCOSObject().createOutputStream()) {
+            stream.createInputStream().transferTo(outputStream);
+        } finally {
+            replacement = null;
+            replacementStream = null;
+        }
+    }
+
+    // PDFStreamEngine overrides to allow editing
     @Override
     public void showForm(PDFormXObject form) throws IOException {
         // DON'T descend into XObjects
