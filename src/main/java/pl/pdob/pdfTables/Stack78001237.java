@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Class to demonstrate issue with tables with merged cells<br>
